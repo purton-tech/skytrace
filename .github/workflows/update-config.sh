@@ -13,4 +13,5 @@ do
     sed -i "0,/hash-$CONFIG_NAME/{s/hash-$CONFIG_NAME.*$/hash-$CONFIG_NAME: $HASH/}" ../../Pulumi.yaml 
 
     docker tag $i $i:$1
+    docker push $1:$1
 done
