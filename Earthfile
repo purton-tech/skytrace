@@ -20,10 +20,10 @@ ARG ENVOY_PROXY=envoyproxy/envoy:v1.21.2
 # If you want to test the pushed image -> docker pull purtontech/trace-server:latest
 # docker run --rm -it --env APP_DATABASE_URL=$APP_DATABASE_URL purtontech/trace-server
 # docker run -it --entrypoint /bin/bash purtontech/trace-server
-ARG APP_IMAGE_NAME=ghcr.io/purtontech/skytrace:latest
-ARG MIGRATIONS_IMAGE_NAME=ghcr.io/purtontech/skytrace-migrations:latest
-ARG ENVOY_IMAGE_NAME=ghcr.io/purtontech/skytrace-envoy:latest
-ARG FEED_IMAGE_NAME=ghcr.io/purtontech/skytrace-space-track-feed:latest
+ARG APP_IMAGE_NAME=ghcr.io/purton-tech/skytrace:latest
+ARG MIGRATIONS_IMAGE_NAME=ghcr.io/purton-tech/skytrace-migrations:latest
+ARG ENVOY_IMAGE_NAME=ghcr.io/purton-tech/skytrace-envoy:latest
+ARG FEED_IMAGE_NAME=ghcr.io/purton-tech/skytrace-space-track-feed:latest
 
 WORKDIR /build
 
