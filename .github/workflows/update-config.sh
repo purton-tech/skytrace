@@ -11,4 +11,6 @@ do
     echo "Hash $HASH"
     # Update entries i.e. hash-trace-server: sha256:c677b52b14375c03eaede5ccdf4d40ccc9b7e9ef0157fd4b0f45b0e431f0c76d
     sed -i "0,/hash-$CONFIG_NAME/{s/hash-$CONFIG_NAME.*$/hash-$CONFIG_NAME: $HASH/}" ../../Pulumi.yaml 
+
+    docker tag $i $i:$1
 done
