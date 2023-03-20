@@ -3,22 +3,6 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      ["@semantic-release-plus/docker", {
-          "name": "ghcr.io/purton-tech/skytrace:latest",
-          "skipLogin": true
-      }],
-      ["@semantic-release-plus/docker", {
-          "name": "ghcr.io/purton-tech/skytrace-db-migrations:latest",
-          "skipLogin": true
-      }],
-      ["@semantic-release-plus/docker", {
-          "name": "ghcr.io/purton-tech/skytrace-envoy:latest",
-          "skipLogin": true
-      }],
-      ["@semantic-release-plus/docker", {
-          "name": "ghcr.io/purton-tech/skytrace-space-track-feed:latest",
-          "skipLogin": true
-      }],
       ["@semantic-release/exec", {
         "publishCmd": "./update-config.sh",
         "execCwd": "./.github/workflows"
