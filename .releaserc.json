@@ -4,19 +4,19 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       ["@semantic-release-plus/docker", {
-          "name": "purton-tech/skytrace:latest",
+          "name": "ghcr.io/purton-tech/skytrace:latest",
           "skipLogin": true
       }],
       ["@semantic-release-plus/docker", {
-          "name": "purton-tech/skytrace-db-migrations:latest",
+          "name": "ghcr.io/purton-tech/skytrace-db-migrations:latest",
           "skipLogin": true
       }],
       ["@semantic-release-plus/docker", {
-          "name": "purton-tech/skytrace-envoy:latest",
+          "name": "ghcr.io/purton-tech/skytrace-envoy:latest",
           "skipLogin": true
       }],
       ["@semantic-release-plus/docker", {
-          "name": "purton-tech/skytrace-space-track-feed:latest",
+          "name": "ghcr.io/purton-tech/skytrace-space-track-feed:latest",
           "skipLogin": true
       }],
       ["@semantic-release/exec", {
