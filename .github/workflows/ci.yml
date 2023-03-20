@@ -26,8 +26,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       FORCE_COLOR: 1
     steps:
@@ -48,12 +46,21 @@ jobs:
     - name: Earthly version
       run: earthly --version
 
-    - name: Log in to the Container registry
-      run: docker login --username "$DOCKERHUB_USERNAME" --password "$DOCKERHUB_TOKEN"
+    - name: Log in to the Github Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run build and Deploy Containers
+    - name: Run build but don't push
+      if: github.ref != 'refs/heads/main'
+      run: earthly --allow-privileged --output --ci +all
+
+    - name: Run build and push containers
+      if: github.ref == 'refs/heads/main'
       run: earthly --allow-privileged --output --ci --push +all
-      
+
     # If this is a release
     #   create release notes
     #   set the docker version

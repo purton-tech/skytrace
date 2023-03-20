@@ -1,10 +1,10 @@
-#!/bin/bash 
-containers=("purtontech/trace-server" "purtontech/trace-db-migrations" "purtontech/trace-envoy" "purtontech/trace-space-track-feed")
+#!/bin/bash
+containers=("ghcr.io/purtontech/skytrace" "ghcr.io/purtontech/skytrace-migrations" "ghcr.io/purtontech/skytrace-envoy" "ghcr.io/purtontech/skytrace-space-track-feed")
 
 for i in "${containers[@]}"
 do
     docker pull $i 
-    CONFIG_NAME=$(echo $i | cut -c 12-) 
+    CONFIG_NAME=$(echo $i | cut -c 20-) 
     HASH=$(docker inspect --format='{{index .RepoDigests 0}}' $i )
     HASH=$(echo $HASH | sed 's/^.*@//' )
     echo "Name $CONFIG_NAME"
