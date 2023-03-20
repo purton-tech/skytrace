@@ -1,0 +1,111 @@
+// Break points
+// https://www.freecodecamp.org/news/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862/
+@mixin for-phone-only {
+    @media (max-width: 599px) {
+        @content;
+    }
+}
+
+@mixin for-tablet-portrait-up {
+    @media (min-width: 600px) {
+        @content;
+    }
+}
+
+@mixin for-tablet-landscape-up {
+    @media (min-width: 900px) {
+        @content;
+    }
+}
+
+@mixin for-desktop-up {
+    @media (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin for-big-desktop-up {
+    @media (min-width: 1800px) {
+        @content;
+    }
+}
+
+// Primer Design System https://primer.style/
+@import '@primer/css/actionlist/index.scss';
+@import '@primer/css/alerts/index.scss';
+@import '@primer/css/base/index.scss';
+@import '@primer/css/box/index.scss';
+@import '@primer/css/buttons/index.scss';
+//@import '@primer/css/forms/form-select.scss';
+@import '@primer/css/forms/form-control.scss';
+@import '@primer/css/color-modes/index.scss';
+@import '@primer/css/labels/index.scss';
+@import '@primer/css/overlay/index.scss';
+@import '@primer/css/navigation/index.scss';
+@import '@primer/css/pagination/index.scss';
+@import '@primer/css/select-menu/index.scss';
+@import '@primer/css/timeline/index.scss';
+@import '@primer/css/utilities/index.scss';
+
+// Our custom SCSS and web components
+@import './signature';
+@import './layout';
+@import './negotiations';
+@import '../web-components/snack-bar';
+@import '../web-components/data-table';
+@import '../web-components/side-drawer';
+
+// Override Primer CSS
+
+.Counter {
+    background-color: orange;
+}
+
+.paginate-container {
+    margin: 0;
+}
+
+// Looks like primer doesn't have gap.
+.gap-1 {
+    gap: 1rem;
+}
+
+// The primer css version use an SVG which doesn't get past CSP.
+.form-select {
+    display: inline-block;
+    max-width: 100%;
+    height: $size-5;
+    padding-right: $spacer-4;
+    background-color: var(--color-canvas-default);
+    //appearance: none;
+
+    // Hides the default caret in IE11
+    &::-ms-expand {
+        opacity: 0;
+    }
+
+    &[multiple] {
+        height: auto;
+    }
+}
+
+.Box-header {
+    background: var(--color-canvas-default);
+}
+
+// Fix side menu so the z-index takes effect. Otherwise
+// they are hidden behind other items.
+@media (min-width: 544px) {
+    .SelectMenu {
+        position: fixed;
+    }
+}
+
+// Set the primary button from green to blue.
+:root {
+    --color-btn-primary-bg: rgb(53, 89, 199);
+    --color-btn-primary-border: rgb(53, 89, 199);
+    --color-btn-primary-hover-bg: rgb(39, 90, 243);
+    --color-btn-primary-selected-bg: rgb(39, 90, 243);
+    --color-btn-primary-hover-border: rgb(53, 89, 199);
+}

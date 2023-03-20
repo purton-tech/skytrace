@@ -1,0 +1,22 @@
+services:
+  auth:
+    image: purtontech/barricade:1.2.2
+    environment:
+      AUTH_TYPE: encrypted
+      # The following is used by the migrations and also for SQLX at compile time.
+      DATABASE_URL: postgresql://postgres:testpassword@db:5432/postgres
+      SECRET_KEY: 190a5bf4b3cbb6c0991967ab1c48ab30790af876720f1835cbbf3820f4f5d949
+      REDIRECT_URL: /app/post_registration
+      ENABLE_EMAIL_OTP: 'false'
+
+      # Send all email to mailhog
+      SMTP_HOST: smtp
+      SMTP_PORT: 1025
+      SMTP_USERNAME: thisisnotused
+      SMTP_PASSWORD: thisisnotused
+      SMTP_TLS_OFF: 'true'
+      RESET_DOMAIN: http://localhost:7100
+      RESET_FROM_EMAIL_ADDRESS: support@wedontknowyet.com
+    depends_on:
+      db:
+        condition: service_healthy

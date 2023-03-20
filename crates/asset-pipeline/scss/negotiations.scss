@@ -1,0 +1,15 @@
+
+
+#negotiation-panel {
+    height: calc(100% - 150px);
+}
+
+#negotiation-stream {
+    width: 100%;
+    height: calc(100% - 125px);
+    position: absolute;
+    bottom: 77px;
+    overflow-y: scroll;
+    padding-right: 32px;
+    padding-left: 32px;
+}

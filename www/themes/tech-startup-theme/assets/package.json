@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "release": "parcel build ./index.ts --dist-dir ../static"
+  },
+  "devDependencies": {
+    "@primer/css": "20.6.0",
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3"
+  }
+}

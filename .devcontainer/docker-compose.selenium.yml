@@ -1,0 +1,15 @@
+services:
+  # Integration testing using a headless chrome browser
+  selenium:
+    image: selenium/standalone-chrome:4.1.1-20220121
+    shm_size: 2gb
+    environment:
+      VNC_NO_PASSWORD: 1
+    ports:
+      # VNC
+      - 7405:5900
+      # No VNC
+      - 7406:7900
+    volumes:
+      # So that we can load examples with the browser testing.
+      - ./ccsds-examples:/workspace

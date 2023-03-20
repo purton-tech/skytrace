@@ -1,0 +1,307 @@
+// schema.proto at 0:0
+syntax = "proto3";
+package ccsds.schema;
+
+import "ccsds/schema/common.proto";
+import "validate/validate.proto"; // github.com/envoyproxy/protoc-gen-validate
+
+message AdditionalParametersType {
+  repeated string comment = 1;
+  AreaType area_pc = 2;
+  AreaType area_drg = 3;
+  AreaType area_srp = 4;
+  MassType mass = 5;
+  M2kgType cd_area_over_mass = 6;
+  M2kgType cr_area_over_mass = 7;
+  Ms2Type thrust_acceleration = 8;
+  WkgType sedr = 9;
+}
+message CdmBody {
+  RelativeMetadataData relative_metadata_data = 1 [(validate.rules).message.required = true];
+  repeated CdmSegment segment = 2 [(validate.rules).repeated.min_items = 2, (validate.rules).repeated.max_items = 2];
+}
+message CdmCovarianceMatrixType {
+  repeated string comment = 1;
+  M2Type cr_r = 2;
+  M2Type ct_r = 3;
+  M2Type ct_t = 4;
+  M2Type cn_r = 5;
+  M2Type cn_t = 6;
+  M2Type cn_n = 7;
+  M2sType crdot_r = 8;
+  M2sType crdot_t = 9;
+  M2sType crdot_n = 10;
+  M2s2Type crdot_rdot = 11;
+  M2sType ctdot_r = 12;
+  M2sType ctdot_t = 13;
+  M2sType ctdot_n = 14;
+  M2s2Type ctdot_rdot = 15;
+  M2s2Type ctdot_tdot = 16;
+  M2sType cndot_r = 17;
+  M2sType cndot_t = 18;
+  M2sType cndot_n = 19;
+  M2s2Type cndot_rdot = 20;
+  M2s2Type cndot_tdot = 21;
+  M2s2Type cndot_ndot = 22;
+  M3kgType cdrg_r = 23;
+  M3kgType cdrg_t = 24;
+  M3kgType cdrg_n = 25;
+  M3kgsType cdrg_rdot = 26;
+  M3kgsType cdrg_tdot = 27;
+  M3kgsType cdrg_ndot = 28;
+  M4kg2Type cdrg_drg = 29;
+  M3kgType csrp_r = 30;
+  M3kgType csrp_t = 31;
+  M3kgType csrp_n = 32;
+  M3kgsType csrp_rdot = 33;
+  M3kgsType csrp_tdot = 34;
+  M3kgsType csrp_ndot = 35;
+  M4kg2Type csrp_drg = 36;
+  M4kg2Type csrp_srp = 37;
+  M2s2Type cthr_r = 38;
+  M2s2Type cthr_t = 39;
+  M2s2Type cthr_n = 40;
+  M2s3Type cthr_rdot = 41;
+  M2s3Type cthr_tdot = 42;
+  M2s3Type cthr_ndot = 43;
+  M3kgs2Type cthr_drg = 44;
+  M3kgs2Type cthr_srp = 45;
+  M2s4Type cthr_thr = 46;
+}
+message CdmData {
+  repeated string comment = 1;
+  OdParametersType od_parameters = 2;
+  AdditionalParametersType additional_parameters = 3;
+  CdmStateVectorType state_vector = 4;
+  CdmCovarianceMatrixType covariance_matrix = 5;
+}
+message CdmHeader {
+  repeated string comment = 1;
+  string creation_date = 2 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string originator = 3 [(validate.rules).string.min_len = 2];
+  string message_for = 4;
+  string message_id = 5 [(validate.rules).string.min_len = 1];
+}
+message CdmMetadata {
+  repeated string comment = 1;
+  ObjectType object = 2;
+  string object_designator = 3;
+  string catalog_name = 4;
+  string object_name = 5;
+  string international_designator = 6;
+  ObjectDescriptionType object_type = 7;
+  string operator_contact_position = 8;
+  string operator_organization = 9;
+  string operator_phone = 10;
+  string operator_email = 11;
+  string ephemeris_name = 12;
+  CovarianceMethodType covariance_method = 13;
+  ManeuverableType maneuverable = 14;
+  string orbit_center = 15;
+  ReferenceFrameType ref_frame = 16;
+  string gravity_model = 17;
+  string atmospheric_model = 18;
+  string n_body_perturbations = 19;
+  YesNoType solar_rad_pressure = 20;
+  YesNoType earth_tides = 21;
+  YesNoType intrack_thrust = 22;
+}
+message CdmPositionType {
+  PositionUnits units = 2;
+  double value = 3;
+}
+message CdmSegment {
+  CdmMetadata metadata = 1;
+  CdmData data = 2;
+}
+message CdmStateVectorType {
+  repeated string comment = 1;
+  CdmPositionType x = 2;
+  CdmPositionType y = 3;
+  CdmPositionType z = 4;
+  CdmVelocityType x_dot = 5;
+  CdmVelocityType y_dot = 6;
+  CdmVelocityType z_dot = 7;
+}
+message CdmType {
+  string id = 1 [(validate.rules).string.min_len = 1];
+  string version = 2 [(validate.rules).string.min_len = 1];
+  CdmHeader header = 3 [(validate.rules).message.required = true];
+  CdmBody body = 4 [(validate.rules).message.required = true];
+}
+message CdmVelocityType {
+  VelocityUnits units = 2;
+  double value = 3;
+}
+enum CovarianceMethodType {
+  // Default
+  COVARIANCE_METHOD_TYPE_UNSPECIFIED = 0;
+  COVARIANCE_METHOD_TYPE_CALCULATED = 1;
+  COVARIANCE_METHOD_TYPE_DEFAULT = 2;
+}
+message DvType {
+  DvUnits units = 1;
+  double value = 2;
+}
+enum DvUnits {
+  // Default
+  DV_UNITS_UNSPECIFIED = 0;
+  DV_UNITS_M_S = 1;
+}
+message M2Type {
+  M2Units units = 1;
+  double value = 2;
+}
+enum M2Units {
+  // Default
+  M2_UNITS_UNSPECIFIED = 0;
+  M2_UNITS_M_2 = 1;
+}
+message M2kgType {
+  M2kgUnits units = 1;
+  double value = 2;
+}
+enum M2kgUnits {
+  // Default
+  M2KG_UNITS_UNSPECIFIED = 0;
+  M2KG_UNITS_M_2_KG = 1;
+}
+message M2s2Type {
+  M2s2Units units = 1;
+  double value = 2;
+}
+enum M2s2Units {
+  // Default
+  M2S2_UNITS_UNSPECIFIED = 0;
+  M2S2_UNITS_M_2_S_2 = 1;
+}
+message M2s3Type {
+  M2s3Units units = 1;
+  double value = 2;
+}
+enum M2s3Units {
+  // Default
+  M2S3_UNITS_UNSPECIFIED = 0;
+  M2S3_UNITS_M_2_S_3 = 1;
+}
+message M2s4Type {
+  M2s4Units units = 1;
+  double value = 2;
+}
+enum M2s4Units {
+  // Default
+  M2S4_UNITS_UNSPECIFIED = 0;
+  M2S4_UNITS_M_2_S_4 = 1;
+}
+message M2sType {
+  M2sUnits units = 1;
+  double value = 2;
+}
+enum M2sUnits {
+  // Default
+  M2S_UNITS_UNSPECIFIED = 0;
+  M2S_UNITS_M_2_S = 1;
+}
+message M3kgType {
+  M3kgUnits units = 1;
+  double value = 2;
+}
+enum M3kgUnits {
+  // Default
+  M3KG_UNITS_UNSPECIFIED = 0;
+  M3KG_UNITS_M_3_KG = 1;
+}
+message M3kgs2Type {
+  M3kgs2Units units = 1;
+  double value = 2;
+}
+enum M3kgs2Units {
+  // Default
+  M3KGS2_UNITS_UNSPECIFIED = 0;
+  M3KGS2_UNITS_M_3_KG_S_2 = 1;
+}
+message M3kgsType {
+  M3kgsUnits units = 1;
+  double value = 2;
+}
+enum M3kgsUnits {
+  // Default
+  M3KGS_UNITS_UNSPECIFIED = 0;
+  M3KGS_UNITS_M_3_KG_S = 1;
+}
+message M4kg2Type {
+  M4kg2Units units = 1;
+  double value = 2;
+}
+enum M4kg2Units {
+  // Default
+  M4KG2_UNITS_UNSPECIFIED = 0;
+  M4KG2_UNITS_M_4_KG_2 = 1;
+}
+enum ManeuverableType {
+  // Default
+  MANEUVERABLE_TYPE_UNSPECIFIED = 0;
+  MANEUVERABLE_TYPE_YES = 1;
+  MANEUVERABLE_TYPE_NO = 2;
+  MANEUVERABLE_TYPE_N_A = 3;
+}
+enum ObjectType {
+  // Default
+  OBJECT_TYPE_UNSPECIFIED = 0;
+  OBJECT_TYPE_OBJECT_1 = 1;
+  OBJECT_TYPE_OBJECT_2 = 2;
+}
+enum ReferenceFrameType {
+  // Default
+  REFERENCE_FRAME_TYPE_UNSPECIFIED = 0;
+  REFERENCE_FRAME_TYPE_EME_2000 = 1;
+  REFERENCE_FRAME_TYPE_GCRF = 2;
+  REFERENCE_FRAME_TYPE_ITRF = 3;
+}
+message RelativeMetadataData {
+  repeated string comment = 1;
+  string tca = 2 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  LengthType miss_distance = 3;
+  DvType relative_speed = 4;
+  RelativeStateVectorType relative_state_vector = 5;
+  string start_screen_period = 6;
+  string stop_screen_period = 7;
+  ScreenVolumeFrameType screen_volume_frame = 8;
+  ScreenVolumeShapeType screen_volume_shape = 9;
+  LengthType screen_volume_x = 10;
+  LengthType screen_volume_y = 11;
+  LengthType screen_volume_z = 12;
+  string screen_entry_time = 13;
+  string screen_exit_time = 14;
+  double collision_probability = 15 [(validate.rules).double = {gte: 0.0, lte: 1.0}];
+  string collision_probability_method = 16;
+}
+message RelativeStateVectorType {
+  LengthType relative_position_r = 1;
+  LengthType relative_position_t = 2;
+  LengthType relative_position_n = 3;
+  DvType relative_velocity_r = 4;
+  DvType relative_velocity_t = 5;
+  DvType relative_velocity_n = 6;
+}
+enum ScreenVolumeFrameType {
+  // Default
+  SCREEN_VOLUME_FRAME_TYPE_UNSPECIFIED = 0;
+  SCREEN_VOLUME_FRAME_TYPE_RTN = 1;
+  SCREEN_VOLUME_FRAME_TYPE_TVN = 2;
+}
+enum ScreenVolumeShapeType {
+  // Default
+  SCREEN_VOLUME_SHAPE_TYPE_UNSPECIFIED = 0;
+  SCREEN_VOLUME_SHAPE_TYPE_ELLIPSOID = 1;
+  SCREEN_VOLUME_SHAPE_TYPE_BOX = 2;
+}
+message WkgType {
+  WkgUnits units = 1;
+  double value = 2;
+}
+enum WkgUnits {
+  // Default
+  WKG_UNITS_UNSPECIFIED = 0;
+  WKG_UNITS_W_KG = 1;
+}

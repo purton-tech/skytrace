@@ -1,0 +1,65 @@
+// ccsds_schema.proto at 0:0
+syntax = "proto3";
+package ccsds.schema;
+
+import "ccsds/schema/common.proto";
+import "validate/validate.proto"; // github.com/envoyproxy/protoc-gen-validate
+
+message KeplerianElementsType {
+  repeated string comment = 1;
+  DistanceType semi_major_axis = 2;
+  double eccentricity = 3;
+  InclinationType inclination = 4;
+  AngleType ra_of_asc_node = 5;
+  AngleType arg_of_pericenter = 6;
+  AngleType true_anomaly = 7;
+  AngleType mean_anomaly = 8;
+  GmType gm = 21;
+}
+
+message ManeuverParametersType {
+  repeated string comment = 1;
+  string man_epoch_ignition = 2;
+  DurationType man_duration = 3;
+  DeltamassType man_delta_mass = 4;
+  string man_ref_frame = 5;
+  VelocityType man_dv_1 = 6;
+  VelocityType man_dv_2 = 7;
+  VelocityType man_dv_3 = 8;
+}
+
+message OpmBody {
+  OpmSegment segment = 1 [(validate.rules).message.required = true];
+}
+
+message OpmData {
+  repeated string comment = 1;
+  StateVectorType state_vector = 2;
+  KeplerianElementsType keplerian_elements = 3;
+  SpacecraftParametersType spacecraft_parameters = 4;
+  OpmCovarianceMatrixType covariance_matrix = 5;
+  repeated ManeuverParametersType maneuver_parameters = 6;
+  UserDefinedType user_defined_parameters = 7;
+}
+
+message OpmMetadata {
+  repeated string comment = 1;
+  string object_name = 2;
+  string object_id = 3;
+  string center_name = 4;
+  string ref_frame = 5;
+  string ref_frame_epoch = 6 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string time_system = 7;
+}
+
+message OpmSegment {
+  OpmMetadata metadata = 1;
+  OpmData data = 2;
+}
+
+message OpmType {
+  string id = 1 [(validate.rules).string.min_len = 1];
+  string version = 2 [(validate.rules).string.min_len = 1];
+  NdmHeader header = 3 [(validate.rules).message.required = true];
+  OpmBody body = 4 [(validate.rules).message.required = true];
+}

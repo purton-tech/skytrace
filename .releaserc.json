@@ -1,0 +1,36 @@
+{
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      ["@semantic-release-plus/docker", {
+          "name": "purtontech/trace-server:latest",
+          "skipLogin": true
+      }],
+      ["@semantic-release-plus/docker", {
+          "name": "purtontech/trace-db-migrations:latest",
+          "skipLogin": true
+      }],
+      ["@semantic-release-plus/docker", {
+          "name": "purtontech/trace-envoy:latest",
+          "skipLogin": true
+      }],
+      ["@semantic-release-plus/docker", {
+          "name": "purtontech/trace-space-track-feed:latest",
+          "skipLogin": true
+      }],
+      ["@semantic-release/exec", {
+        "publishCmd": "./update-config.sh",
+        "execCwd": "./.github/workflows"
+      }],
+      ["@semantic-release/exec", {
+        "publishCmd": "./update-version.sh ${nextRelease.version}",
+        "execCwd": "./.github/workflows"
+      }],
+      ["@semantic-release/exec", {
+        "publishCmd": "./update-git.sh ${nextRelease.version}",
+        "execCwd": "./.github/workflows"
+      }]
+    ]
+  }
+  

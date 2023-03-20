@@ -1,0 +1,20 @@
+{
+    "scripts": {
+        "start": "npm run copy-primer && ./patch-turbo.sh && npm run protoc && parcel watch --no-hmr ./index.ts",
+        "release": "npm run copy-primer && ./patch-turbo.sh && npm run protoc && parcel build ./index.ts",
+        "protoc": "mkdir -p ./grpc && npx protoc --ts_out ./grpc --proto_path ../grpc-api $(find ../grpc-api -name '*.proto')",
+        "copy-primer": "mkdir -p ./dist && cp ./node_modules/@primer/view-components/app/assets/styles/primer_view_components.css ./dist/"
+    },
+    "devDependencies": {
+        "@github/relative-time-element": "^4.1.5",
+        "@parcel/transformer-sass": "^2.6.0",
+        "@primer/css": "^20.6.0",
+        "@primer/view-components": "^0.0.111",
+        "@protobuf-ts/plugin": "^2.6.0",
+        "idb": "^7.0.1",
+        "parcel": "^2.6.0"
+    },
+    "dependencies": {
+        "@hotwired/turbo": "^7.2.4"
+    }
+}

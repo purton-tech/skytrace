@@ -1,0 +1,7 @@
+target
+node_modules
+tmp
+.DS_Store
+*.pem
+crates/db/schema.sql
+secret.txt

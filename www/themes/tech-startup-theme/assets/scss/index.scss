@@ -1,0 +1,99 @@
+@import "responsive-mixin";
+
+// Primer Design System https://primer.style/
+@import '@primer/css/alerts/index.scss';
+@import '@primer/css/base/index.scss';
+@import '@primer/css/buttons/index.scss';
+//@import '@primer/css/forms/form-select.scss';
+@import '@primer/css/color-modes/index.scss';
+@import '@primer/css/overlay/index.scss';
+@import '@primer/css/utilities/index.scss';
+@import '@primer/css/marketing/index.scss';
+@import '@primer/css/markdown/index.scss';
+@import '@primer/css/layout/index.scss';
+
+// https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+// Make images repsinsive
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+// Colours
+:root {
+    --foreground: #000;
+    --background: #ffffff;
+    --accents-1: #fafafa;
+    --accents-2: #EBEBEB;
+    --accents-3: #999999;
+    --accents-4: #888888;
+    --accents-5: #666666;
+    --accents-6: #444444;
+    --accents-7: #333333;
+    --accents-8: #111111;
+    --primary: #000;
+    --success: #031b4d;
+    --error: #ee0000;
+    --warning: #f5a623;
+    --dropdown-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
+    --dropdown-triangle-stroke: #fff;
+    --scroller-start: var(--background);
+    --scroller-end: rgba(255, 255, 255, 0);
+    --shadow-small: 0 5px 10px rgba(0, 0, 0, 0.12);
+    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --shadow-large: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+:root {
+    --content-width: 1040px;
+    --blog-content-width: 800px;
+    --article-width: 45rem;
+    --content-padding: 10rem 1em 30px 1em;
+    --mobile-content-padding: 2//rem 1em 30px 1em;
+}
+
+html {
+    box-sizing: border-box;
+    font-family: var(--font-family-light);
+}
+
+body {
+    background: #ffffff;
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: var(--content-width);
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.blog-content {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: var(--blog-content-width);
+
+    @include for-tablet-portrait-up {
+        padding-top: 6rem;
+    }
+}
+
+// Override 
+.markdown-body pre {
+    background-color:#2b303b;
+    color:#c0c5ce;
+}
+
+@import './navbar';
+@import './footer';
+@import './developer-docs';
+@import './blog-list';
+@import './copy-clipboard';
+@import './play-button';

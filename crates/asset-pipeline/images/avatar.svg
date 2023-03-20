@@ -1,0 +1,8 @@
+<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 27">
+  <rect fill="rgb(46, 77, 172)" height="27" rx="12" width="27" x="0" y="0">
+  </rect>
+  <g fill="#fff" opacity=".5">
+    <circle cx="13.5" cy="30" r="13"></circle>
+    <circle cx="13.5" cy="11" r="5"></circle>
+  </g>
+</svg>

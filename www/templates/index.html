@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="content d-flex flex-content-center flex-column mt-4 mt-md-8 text-center">
+  <h1 class="h3-mktg mb-4">
+    SkyTrace connects both parties during a conjunction and provides a secure workflow for collision avoidance.
+  </h1>
+  <h2 class="h6-mktg color-fg-muted mb-4">
+    In addition SkyTrace reduces your risk of collision and extends the lifetime of your satellites by sharing
+    accurate position data between satellite operators. More accurate data means fewer manoeuvres.
+  </h2>
+  <div class="mb-6">
+    <a class="btn-mktg mr-1" href="{{ sign_up_url }}">Sign Up</a>
+    <a class="btn-mktg btn-muted-mktg ml-1" target="_blank" href="https://youtu.be/mmBNxNV9Qts">Watch 4 minute Demo</a>
+  </div>
+  <div class="border-left border-right">
+    <a class="you-tube" target="_blank" href="https://youtu.be/mmBNxNV9Qts">
+      <img class="mr-3" width="100%" alt="Airbus Logo" src="dashboard.png"></img>
+      <div class="play-button d-none d-lg-block"></div>
+    </a>
+  </div>
+</section>
+
+
+<section class="text-center color-bg-accent-emphasis p-4">
+  <h3 class="color-fg-on-emphasis">Backed by Airbus Innovations and the European Space Agency</h3>
+  <div class="d-flex flex-content-center flex-justify-center pt-4">
+    <img class="mr-3" width="200" alt="Airbus Logo" src="airbus-logo.svg"></img>
+    <img class="ml-3" width="200" alt="Esa Logo" src="esa-logo.svg"></img>
+  </div>
+</section>
+
+<section>
+  <div class="content d-md-flex flex-row mt-6 mt-lg-12 pb-6">
+    <div class="col-md-6 pr-md-4">
+      <h2 class="h5-mktg mb-6">In the case of a high interest event SkyTrace connects both parties together
+        and starts a negotiation workflow</h2>
+      <h4 class="h6-mktg color-fg-muted mb-6">
+        Our negotiation audit trail and workflow ensures everyone knows what is
+        happening and what should happen next. No more negotiations over insecure and unreliable email
+      </h4>
+    </div>
+    <img class="col-md-6 ml-lg-4 color-shadow-large" alt="Cream" src="negotiation-details.png"></img>
+  </div>
+</section>
+
+<section>
+  <div class="content d-flex flex-column-reverse flex-lg-row pt-lg-6 pb-6">
+    <img class="col-md-6 mr-lg-4 color-shadow-large" alt="Cream" src="service-requests.png"></img>
+    <div class="col-md-6 pl-md-4">
+      <h2 class="h5-mktg mb-6">Need more information or assistance during a negotiation?</h2>
+      <h4 class="h6-mktg color-fg-muted mb-6">
+        SkyTrace allows you to create service requests and get a more accurate view
+    of the current situation.
+      </h4>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="content d-md-flex flex-row mt-6 mt-lg-12 pb-6">
+    <div class="col-md-6 pr-md-4">
+      <h2 class="h5-mktg mb-6">SkyTrace provides a platform to share CCSDS data with other operators</h2>
+      <h4 class="h6-mktg color-fg-muted mb-6">
+        Get accurate information on all space objects relevant to you.
+      Automate operations with our high performance API.
+      </h4>
+    </div>
+    <img class="col-md-6 ml-lg-4 color-shadow-large" alt="Cream" src="conjunctions.png"></img>
+  </div>
+</section>
+
+<section class="color-bg-success p-6">
+  <h2 class="text-center mb-4 h5-mktg">Features</h2>
+  <div class="container-lg clearfix">
+    <div class="col-sm-12 col-md-6 float-left p-4">
+      <h4 class="h5-mktg">Tamper resistant audit trail</h4>
+      <p class="mt-3">Our audit trial database uses Blockchain technology to add tamper resistance.</p>
+      <p>This means negotiations cannot be altered by us or any third party without alerting the wider community.</p>
+    </div>
+    <div class="col-sm-12 col-md-6 float-left p-4">
+      <h4 class="h5-mktg">Communications secured with End 2 End Encryption</h4>
+      <p class="mt-3">All messages sent between operators in a negotiation are encrypted before leaving your device.</p>
+      <p>No one has access to the communications other than the parties involved.</p>
+    </div>
+    <div class="col-sm-12 col-md-6 float-left p-4">
+      <h4 class="h5-mktg">Extensive Data Protection and Privacy Controls</h4>
+      <p class="mt-3">You can restrict how you want to share your CCSDS data with our authorization controls.</p>
+      <p>For example you may only want to share with certain countries or with certain other parties.</p>
+    </div>
+    <div class="col-sm-12 col-md-6 float-left p-4">
+      <h4 class="h5-mktg">High Performance API for CCSDS Data</h4>
+      <p class="mt-3">Our Application Programming Interface is designed to get CCSDS data to you fast and reliably.
+      </p>
+      <p>We support hundreds of programming languages with code generated from our API schema.</p>
+    </div>
+  </div>
+</section>
+
+<section class="d-flex flex-content-center flex-column mt-8 mb-8 text-center pl-1 pr-1">
+  <h3 class="mb-3">{{config.extra.every_page_cta.title}}</h3>
+  {% if config.extra.every_page_cta.cta_url %}
+  <p><a class="btn-mktg" href="{{config.extra.every_page_cta.cta_url}}">{{config.extra.every_page_cta.cta_button}}</a>
+  </p>
+  {% else %}
+  <p><a class="btn-mktg" href="{{sign_up_url}}">{{config.extra.every_page_cta.cta_button}}</a></p>
+  {% endif %}
+</section>
+{% endblock content %}

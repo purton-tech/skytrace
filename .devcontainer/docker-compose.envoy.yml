@@ -1,0 +1,8 @@
+services:
+  envoy:
+    build: 
+      context: .
+      dockerfile: Dockerfile.envoy
+    ports:
+      - "7400:7400"
+      - "7401:7401"

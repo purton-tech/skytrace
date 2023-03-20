@@ -1,0 +1,44 @@
+// ccsds_schema.proto at 0:0
+syntax = "proto3";
+package ccsds.schema;
+
+import "ccsds/schema/common.proto";
+import "validate/validate.proto"; // github.com/envoyproxy/protoc-gen-validate
+
+message OemBody {
+  repeated OemSegment segment = 1 [(validate.rules).repeated.min_items = 1];
+}
+
+message OemData {
+  repeated string comment = 1;
+  repeated StateVectorAccType state_vector = 2;
+  repeated OemCovarianceMatrixType covariance_matrix = 3;
+}
+
+message OemMetadata {
+  repeated string comment = 1;
+  string object_name = 2;
+  string object_id = 3;
+  string center_name = 4;
+  string ref_frame = 5;
+  string ref_frame_epoch = 6 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string time_system = 7;
+  string start_time = 8 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string useable_start_time = 9;
+  string useable_stop_time = 10;
+  string stop_time = 11 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string interpolation = 12;
+  uint32 interpolation_degree = 13;
+}
+
+message OemSegment {
+  OemMetadata metadata = 1;
+  OemData data = 2;
+}
+
+message OemType {
+  string id = 1 [(validate.rules).string.min_len = 1];
+  string version = 2 [(validate.rules).string.min_len = 1];
+  NdmHeader header = 3 [(validate.rules).message.required = true];
+  OemBody body = 4 [(validate.rules).message.required = true];
+}

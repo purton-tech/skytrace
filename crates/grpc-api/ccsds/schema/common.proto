@@ -1,0 +1,564 @@
+// schema.proto at 0:0
+syntax = "proto3";
+package ccsds.schema;
+
+import "validate/validate.proto"; // github.com/envoyproxy/protoc-gen-validate
+
+message AccType {
+  AccUnits units = 1;
+  double value = 2;
+}
+enum AccUnits {
+  // Default
+  ACC_UNITS_UNSPECIFIED = 0;
+  ACC_UNITS_KM_S_2 = 1;
+}
+message AltType {
+  LengthUnits units = 1;
+  double value = 2;
+}
+enum AngleKeywordType {
+  // Default
+  ANGLE_KEYWORD_TYPE_UNSPECIFIED = 0;
+  ANGLE_KEYWORD_TYPE_X_ANGLE = 1;
+  ANGLE_KEYWORD_TYPE_Y_ANGLE = 2;
+  ANGLE_KEYWORD_TYPE_Z_ANGLE = 3;
+}
+enum AngleRateKeywordType {
+  // Default
+  ANGLE_RATE_KEYWORD_TYPE_UNSPECIFIED = 0;
+  ANGLE_RATE_KEYWORD_TYPE_X_RATE = 1;
+  ANGLE_RATE_KEYWORD_TYPE_Y_RATE = 2;
+  ANGLE_RATE_KEYWORD_TYPE_Z_RATE = 3;
+}
+message AngleRateType {
+  AngleRateUnits units = 1;
+  double value = 2;
+}
+enum AngleRateUnits {
+  // Default
+  ANGLE_RATE_UNITS_UNSPECIFIED = 0;
+  ANGLE_RATE_UNITS_DEG_S = 1;
+}
+message AngleType {
+  AngleUnits units = 1;
+  double value = 2;
+}
+enum AngleUnits {
+  // Default
+  ANGLE_UNITS_UNSPECIFIED = 0;
+  ANGLE_UNITS_DEG = 1;
+}
+message AreaType {
+  AreaUnits units = 1;
+  double value = 2;
+}
+enum AreaUnits {
+  // Default
+  AREA_UNITS_UNSPECIFIED = 0;
+  AREA_UNITS_M_2 = 1;
+}
+message AtmosphericReentryParametersType {
+  repeated string comment = 1;
+  DayIntervalType orbit_lifetime = 2;
+  PositionType reentry_altitude = 3;
+  DayIntervalType orbit_lifetime_window_start = 4;
+  DayIntervalType orbit_lifetime_window_end = 5;
+  string nominal_reentry_epoch = 6;
+  string reentry_window_start = 7;
+  string reentry_window_end = 8;
+  PercentageType orbit_lifetime_confidence_level = 9;
+}
+message BallisticCoeffType {
+  BallisticCoeffUnitsType units = 1;
+  double value = 2;
+}
+enum BallisticCoeffUnitsType {
+  // Default
+  BALLISTIC_COEFF_UNITS_TYPE_UNSPECIFIED = 0;
+  BALLISTIC_COEFF_UNITS_TYPE_KG_M_2 = 1;
+}
+enum ControlledType {
+  // Default
+  CONTROLLED_TYPE_UNSPECIFIED = 0;
+  CONTROLLED_TYPE_YES = 1;
+  CONTROLLED_TYPE_NO = 2;
+  CONTROLLED_TYPE_UNKNOWN = 3;
+}
+message DayIntervalType {
+  DayIntervalUnits units = 1;
+  double value = 2;
+}
+enum DayIntervalUnits {
+  // Default
+  DAY_INTERVAL_UNITS_UNSPECIFIED = 0;
+  DAY_INTERVAL_UNITS_D = 1;
+}
+message DeltamassType {
+  MassUnits units = 1;
+  double value = 2;
+}
+enum DisintegrationType {
+  // Default
+  DISINTEGRATION_TYPE_UNSPECIFIED = 0;
+  DISINTEGRATION_TYPE_NONE = 1;
+  DISINTEGRATION_TYPE_MASS_LOSS = 2;
+  DISINTEGRATION_TYPE_BREAK_UP = 3;
+  DISINTEGRATION_TYPE_MASS_LOSS_BREAK_UP = 4;
+}
+message DistanceType {
+  PositionUnits units = 1;
+  double value = 2;
+}
+message DurationType {
+  TimeUnits units = 1;
+  double value = 2;
+}
+message FrequencyType {
+  FrequencyUnits units = 1;
+  double value = 2;
+}
+enum FrequencyUnits {
+  // Default
+  FREQUENCY_UNITS_UNSPECIFIED = 0;
+  FREQUENCY_UNITS_HZ = 1;
+}
+message GmType {
+  GmUnits units = 1;
+  double value = 2;
+}
+enum GmUnits {
+  // Default
+  GM_UNITS_UNSPECIFIED = 0;
+  GM_UNITS_KM_3_S_2 = 1;
+}
+message GroundImpactParametersType {
+  repeated string comment = 1;
+  double probability_of_impact = 2;
+  double probability_of_burn_up = 3;
+  double probability_of_break_up = 4;
+  double probability_of_land_impact = 5;
+  double probability_of_casualty = 6;
+  string nominal_impact_epoch = 7;
+  string impact_window_start = 8;
+  string impact_window_end = 9;
+  string impact_ref_frame = 10;
+  LonType nominal_impact_lon = 11;
+  LatType nominal_impact_lat = 12;
+  AltType nominal_impact_alt = 13;
+  PercentageType impact1_confidence = 14;
+  LonType impact1_start_lon = 15;
+  LatType impact1_start_lat = 16;
+  LonType impact1_stop_lon = 17;
+  LatType impact1_stop_lat = 18;
+  DistanceType impact1_cross_track = 19;
+  PercentageType impact2_confidence = 20;
+  LonType impact2_start_lon = 21;
+  LatType impact2_start_lat = 22;
+  LonType impact2_stop_lon = 23;
+  LatType impact2_stop_lat = 24;
+  DistanceType impact2_cross_track = 25;
+  PercentageType impact3_confidence = 26;
+  LonType impact3_start_lon = 27;
+  LatType impact3_start_lat = 28;
+  LonType impact3_stop_lon = 29;
+  LatType impact3_stop_lat = 30;
+  DistanceType impact3_cross_track = 31;
+}
+enum ImpactUncertaintyType {
+  // Default
+  IMPACT_UNCERTAINTY_TYPE_UNSPECIFIED = 0;
+  IMPACT_UNCERTAINTY_TYPE_NONE = 1;
+  IMPACT_UNCERTAINTY_TYPE_ANALYTICAL = 2;
+  IMPACT_UNCERTAINTY_TYPE_STOCHASTIC = 3;
+  IMPACT_UNCERTAINTY_TYPE_EMPIRICAL = 4;
+}
+message InclinationType {
+  AngleUnits units = 1;
+  double value = 2;
+}
+message Km2Type {
+  Km2Units units = 1;
+  double value = 2;
+}
+enum Km2Units {
+  // Default
+  KM2_UNITS_UNSPECIFIED = 0;
+  KM2_UNITS_KM_2 = 1;
+}
+message Km2s2Type {
+  Km2s2Units units = 1;
+  double value = 2;
+}
+enum Km2s2Units {
+  // Default
+  KM2S2_UNITS_UNSPECIFIED = 0;
+  KM2S2_UNITS_KM_2_S_2 = 1;
+}
+message Km2sType {
+  Km2sUnits units = 1;
+  double value = 2;
+}
+enum Km2sUnits {
+  // Default
+  KM2S_UNITS_UNSPECIFIED = 0;
+  KM2S_UNITS_KM_2_S = 1;
+}
+enum LatLonUnits {
+  // Default
+  LAT_LON_UNITS_UNSPECIFIED = 0;
+  LAT_LON_UNITS_DEG = 1;
+}
+message LatType {
+  LatLonUnits units = 1;
+  double value = 2;
+}
+message LengthType {
+  LengthUnits units = 1;
+  double value = 2;
+}
+enum LengthUnits {
+  // Default
+  LENGTH_UNITS_UNSPECIFIED = 0;
+  LENGTH_UNITS_M = 1;
+}
+message LonType {
+  LatLonUnits units = 1;
+  double value = 2;
+}
+message MassType {
+  MassUnits units = 1;
+  double value = 2;
+}
+enum MassUnits {
+  // Default
+  MASS_UNITS_UNSPECIFIED = 0;
+  MASS_UNITS_KG = 1;
+}
+message MomentType {
+  MomentUnits units = 1;
+  double value = 2;
+}
+enum MomentUnits {
+  // Default
+  MOMENT_UNITS_UNSPECIFIED = 0;
+  MOMENT_UNITS_KG_M_2 = 1;
+}
+message Ms2Type {
+  Ms2Units units = 1;
+  double value = 2;
+}
+enum Ms2Units {
+  // Default
+  MS2_UNITS_UNSPECIFIED = 0;
+  MS2_UNITS_M_S_2 = 1;
+}
+message NdmHeader {
+  repeated string comment = 1;
+  string creation_date = 2 [(validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"];
+  string originator = 3 [(validate.rules).string.min_len = 1];
+}
+enum ObjectDescriptionType {
+  // Default
+  OBJECT_DESCRIPTION_TYPE_UNSPECIFIED = 0;
+  OBJECT_DESCRIPTION_TYPE_PAYLOAD = 1;
+  OBJECT_DESCRIPTION_TYPE_ROCKET_BODY = 2;
+  OBJECT_DESCRIPTION_TYPE_UPPER_STAGE = 3;
+  OBJECT_DESCRIPTION_TYPE_DEBRIS = 4;
+  OBJECT_DESCRIPTION_TYPE_UNKNOWN = 5;
+  OBJECT_DESCRIPTION_TYPE_OTHER = 6;
+}
+message OdParametersType {
+  repeated string comment = 1;
+  string time_lastob_start = 2;
+  string time_lastob_end = 3;
+  DayIntervalType recommended_od_span = 4;
+  DayIntervalType actual_od_span = 5;
+  uint32 obs_available = 6;
+  uint32 obs_used = 7;
+  uint32 tracks_available = 8;
+  uint32 tracks_used = 9;
+  PercentageType residuals_accepted = 10;
+  double weighted_rms = 11;
+}
+message OemCovarianceMatrixAbstractType {
+  repeated string comment = 1;
+  string epoch = 2;
+  string cov_ref_frame = 3;
+}
+message OemCovarianceMatrixType {
+  PositionCovarianceType cx_x = 1;
+  PositionCovarianceType cy_x = 2;
+  PositionCovarianceType cy_y = 3;
+  PositionCovarianceType cz_x = 4;
+  PositionCovarianceType cz_y = 5;
+  PositionCovarianceType cz_z = 6;
+  PositionVelocityCovarianceType cx_dot_x = 7;
+  PositionVelocityCovarianceType cx_dot_y = 8;
+  PositionVelocityCovarianceType cx_dot_z = 9;
+  VelocityCovarianceType cx_dot_x_dot = 10;
+  PositionVelocityCovarianceType cy_dot_x = 11;
+  PositionVelocityCovarianceType cy_dot_y = 12;
+  PositionVelocityCovarianceType cy_dot_z = 13;
+  VelocityCovarianceType cy_dot_x_dot = 14;
+  VelocityCovarianceType cy_dot_y_dot = 15;
+  PositionVelocityCovarianceType cz_dot_x = 16;
+  PositionVelocityCovarianceType cz_dot_y = 17;
+  PositionVelocityCovarianceType cz_dot_z = 18;
+  VelocityCovarianceType cz_dot_x_dot = 19;
+  VelocityCovarianceType cz_dot_y_dot = 20;
+  VelocityCovarianceType cz_dot_z_dot = 21;
+}
+message OpmCovarianceMatrixAbstractType {
+  repeated string comment = 1;
+  string cov_ref_frame = 2;
+}
+message OpmCovarianceMatrixType {
+  PositionCovarianceType cx_x = 1;
+  PositionCovarianceType cy_x = 2;
+  PositionCovarianceType cy_y = 3;
+  PositionCovarianceType cz_x = 4;
+  PositionCovarianceType cz_y = 5;
+  PositionCovarianceType cz_z = 6;
+  PositionVelocityCovarianceType cx_dot_x = 7;
+  PositionVelocityCovarianceType cx_dot_y = 8;
+  PositionVelocityCovarianceType cx_dot_z = 9;
+  VelocityCovarianceType cx_dot_x_dot = 10;
+  PositionVelocityCovarianceType cy_dot_x = 11;
+  PositionVelocityCovarianceType cy_dot_y = 12;
+  PositionVelocityCovarianceType cy_dot_z = 13;
+  VelocityCovarianceType cy_dot_x_dot = 14;
+  VelocityCovarianceType cy_dot_y_dot = 15;
+  PositionVelocityCovarianceType cz_dot_x = 16;
+  PositionVelocityCovarianceType cz_dot_y = 17;
+  PositionVelocityCovarianceType cz_dot_z = 18;
+  VelocityCovarianceType cz_dot_x_dot = 19;
+  VelocityCovarianceType cz_dot_y_dot = 20;
+  VelocityCovarianceType cz_dot_z_dot = 21;
+}
+message PercentageType {
+  PercentageUnits units = 1;
+  double value = 2;
+}
+enum PercentageUnits {
+  // Default
+  PERCENTAGE_UNITS_UNSPECIFIED = 0;
+  PERCENTAGE_UNITS_ = 1;
+}
+message PositionCovarianceType {
+  PositionCovarianceUnits units = 1;
+  double value = 2;
+}
+enum PositionCovarianceUnits {
+  // Default
+  POSITION_COVARIANCE_UNITS_UNSPECIFIED = 0;
+  POSITION_COVARIANCE_UNITS_KM_2 = 1;
+}
+message PositionType {
+  PositionUnits units = 1;
+  double value = 2;
+}
+enum PositionUnits {
+  // Default
+  POSITION_UNITS_UNSPECIFIED = 0;
+  POSITION_UNITS_KM = 1;
+}
+message PositionVelocityCovarianceType {
+  PositionVelocityCovarianceUnits units = 1;
+  double value = 2;
+}
+enum PositionVelocityCovarianceUnits {
+  // Default
+  POSITION_VELOCITY_COVARIANCE_UNITS_UNSPECIFIED = 0;
+  POSITION_VELOCITY_COVARIANCE_UNITS_KM_2_S = 1;
+}
+message QuaternionDotType {
+  QuaternionDotUnits units = 1;
+  double value = 2;
+}
+enum QuaternionDotUnits {
+  // Default
+  QUATERNION_DOT_UNITS_UNSPECIFIED = 0;
+  QUATERNION_DOT_UNITS_1_S = 1;
+}
+message QuaternionRateType {
+  QuaternionDotType qc_dot = 1;
+  QuaternionDotType q1_dot = 2;
+  QuaternionDotType q2_dot = 3;
+  QuaternionDotType q3_dot = 4;
+}
+message QuaternionType {
+  double qc = 1;
+  double q1 = 2;
+  double q2 = 3;
+  double q3 = 4;
+}
+message RdmPositionType {
+  PositionUnits units = 2;
+  double value = 3;
+}
+message RdmSpacecraftParametersType {
+  repeated string comment = 1;
+  MassType wet_mass = 2;
+  MassType dry_mass = 3;
+  string hazardous_substances = 4;
+  AreaType solar_rad_area = 5;
+  double solar_rad_coeff = 6;
+  AreaType drag_area = 7;
+  double drag_coeff = 8;
+  AreaType rcs = 9;
+  BallisticCoeffType ballistic_coeff = 10;
+  Ms2Type thrust_acceleration = 11;
+}
+message RdmVelocityType {
+  VelocityUnits units = 2;
+  double value = 3;
+}
+enum ReentryUncertaintyMethodType {
+  // Default
+  REENTRY_UNCERTAINTY_METHOD_TYPE_UNSPECIFIED = 0;
+  REENTRY_UNCERTAINTY_METHOD_TYPE_NONE = 1;
+  REENTRY_UNCERTAINTY_METHOD_TYPE_ANALYTICAL = 2;
+  REENTRY_UNCERTAINTY_METHOD_TYPE_STOCHASTIC = 3;
+  REENTRY_UNCERTAINTY_METHOD_TYPE_EMPIRICAL = 4;
+}
+enum RotDirectionType {
+  // Default
+  ROT_DIRECTION_TYPE_UNSPECIFIED = 0;
+  ROT_DIRECTION_TYPE_A_2_B = 1;
+  ROT_DIRECTION_TYPE_B_2_A = 2;
+}
+message RotationAngleComponentType {
+  AngleKeywordType angle = 1;
+  AngleUnits units = 2;
+  double value = 3;
+}
+message RotationAngleComponentTypeold {
+  AngleUnits units = 1;
+  AngleKeywordType angle = 2;
+  double value = 3;
+}
+message RotationAngleType {
+  RotationAngleComponentType rotation1 = 1;
+  RotationAngleComponentType rotation2 = 2;
+  RotationAngleComponentType rotation3 = 3;
+}
+message RotationRateComponentType {
+  AngleRateKeywordType rate = 1;
+  AngleRateUnits units = 2;
+  double value = 3;
+}
+message RotationRateComponentTypeOLD {
+  AngleRateUnits units = 1;
+  AngleRateKeywordType rate = 2;
+  double value = 3;
+}
+message RotationRateType {
+  RotationRateComponentType rotation1 = 1;
+  RotationRateComponentType rotation2 = 2;
+  RotationRateComponentType rotation3 = 3;
+}
+enum RotseqType {
+  // Default
+  ROTSEQ_TYPE_UNSPECIFIED = 0;
+  ROTSEQ_TYPE_121 = 1;
+  ROTSEQ_TYPE_123 = 2;
+  ROTSEQ_TYPE_131 = 3;
+  ROTSEQ_TYPE_132 = 4;
+  ROTSEQ_TYPE_212 = 5;
+  ROTSEQ_TYPE_213 = 6;
+  ROTSEQ_TYPE_231 = 7;
+  ROTSEQ_TYPE_232 = 8;
+  ROTSEQ_TYPE_312 = 9;
+  ROTSEQ_TYPE_313 = 10;
+  ROTSEQ_TYPE_321 = 11;
+  ROTSEQ_TYPE_323 = 12;
+}
+message SpacecraftParametersType {
+  repeated string comment = 1;
+  MassType mass = 2;
+  AreaType solar_rad_area = 3;
+  double solar_rad_coeff = 4;
+  AreaType drag_area = 5;
+  double drag_coeff = 6;
+}
+message StateVectorAccType {
+  string epoch = 1;
+  PositionType x = 2;
+  PositionType y = 3;
+  PositionType z = 4;
+  VelocityType x_dot = 5;
+  VelocityType y_dot = 6;
+  VelocityType z_dot = 7;
+  AccType x_ddot = 8;
+  AccType y_ddot = 9;
+  AccType z_ddot = 10;
+}
+message StateVectorType {
+  repeated string comment = 1;
+  string epoch = 2 [
+    (validate.rules).string.min_len = 1,
+    (validate.rules).string.pattern = "\\-?\\d{4}\\d*-((\\d{2}\\-\\d{2})|\\d{3})T\\d{2}:\\d{2}:\\d{2}(\\.\\d*)?(Z|[+|\\-]\\d{2}:\\d{2})?|[+|\\-]?\\d*(\\.\\d*)?"
+  ];
+  PositionType x = 3;
+  PositionType y = 4;
+  PositionType z = 5;
+  VelocityType x_dot = 6;
+  VelocityType y_dot = 7;
+  VelocityType z_dot = 8;
+}
+enum TimeSystemType {
+  // Default
+  TIME_SYSTEM_TYPE_UNSPECIFIED = 0;
+  TIME_SYSTEM_TYPE_GMST = 1;
+  TIME_SYSTEM_TYPE_GPS = 2;
+  TIME_SYSTEM_TYPE_SCLK = 3;
+  TIME_SYSTEM_TYPE_TAI = 4;
+  TIME_SYSTEM_TYPE_TCB = 5;
+  TIME_SYSTEM_TYPE_TDB = 6;
+  TIME_SYSTEM_TYPE_TOD = 7;
+  TIME_SYSTEM_TYPE_TT = 8;
+  TIME_SYSTEM_TYPE_UT_1 = 9;
+  TIME_SYSTEM_TYPE_UTC = 10;
+}
+enum TimeUnits {
+  // Default
+  TIME_UNITS_UNSPECIFIED = 0;
+  TIME_UNITS_S = 1;
+}
+message UserDefinedParameterType {
+  string parameter = 1;
+  string value = 2;
+}
+message UserDefinedType {
+  repeated SequenceWrapper_UserDefinedType sequence_wrapper = 1;
+
+  message SequenceWrapper_UserDefinedType {
+    repeated string comment = 1;
+    repeated UserDefinedParameterType user_defined = 2;
+  }
+}
+message VelocityCovarianceType {
+  VelocityCovarianceUnits units = 1;
+  double value = 2;
+}
+enum VelocityCovarianceUnits {
+  // Default
+  VELOCITY_COVARIANCE_UNITS_UNSPECIFIED = 0;
+  VELOCITY_COVARIANCE_UNITS_KM_2_S_2 = 1;
+}
+message VelocityType {
+  VelocityUnits units = 1;
+  double value = 2;
+}
+enum VelocityUnits {
+  // Default
+  VELOCITY_UNITS_UNSPECIFIED = 0;
+  VELOCITY_UNITS_KM_S = 1;
+}
+enum YesNoType {
+  // Default
+  YES_NO_TYPE_UNSPECIFIED = 0;
+  YES_NO_TYPE_YES = 1;
+  YES_NO_TYPE_NO = 2;
+}

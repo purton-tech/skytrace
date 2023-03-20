@@ -1,0 +1,68 @@
+mod api;
+mod authentication;
+mod config;
+mod email;
+mod errors;
+mod routes;
+
+use axum::body::Body;
+use axum::extract::Extension;
+use axum::{routing::get, Router};
+use db::create_pool;
+use grpc_api::trace::trace_server::TraceServer;
+use http::{header::CONTENT_TYPE, Request};
+use std::net::SocketAddr;
+use tonic::transport::Server;
+use tower::{make::Shared, steer::Steer, BoxError, ServiceExt};
+
+#[tokio::main]
+async fn main() {
+    let config = config::Config::new();
+
+    let pool = create_pool(&config.database_url);
+
+    // All the routes for our server side rendered pages
+    let app = Router::new()
+        .merge(routes::dashboard::routes())
+        .merge(routes::team::routes())
+        .merge(routes::data_upload::routes())
+        .merge(routes::space_objects::routes())
+        .merge(routes::conjunctions::routes())
+        .merge(routes::orbit_data::routes())
+        .merge(routes::api_keys::routes())
+        .merge(routes::registration_handler::routes())
+        .merge(routes::negotiations::routes())
+        .merge(routes::profile::routes())
+        .merge(routes::search::routes())
+        .route("/static/*path", get(routes::static_files::static_path))
+        .layer(Extension(config))
+        .layer(Extension(pool.clone()))
+        .map_err(BoxError::from)
+        .boxed_clone();
+
+    // Handle gRPC API requests
+    let grpc = Server::builder()
+        .add_service(TraceServer::new(api::trace_grpc_service::TraceService {
+            pool,
+        }))
+        .into_service()
+        .map_response(|r| r.map(axum::body::boxed))
+        .boxed_clone();
+
+    // Create a service that can respond to Web and gRPC
+    let http_grpc = Steer::new(vec![app, grpc], |req: &Request<Body>, _svcs: &[_]| {
+        if req.headers().get(CONTENT_TYPE).map(|v| v.as_bytes()) != Some(b"application/grpc") {
+            0
+        } else {
+            1
+        }
+    });
+
+    // Listen to incoming gRPC and HTTP requests.
+    let addr = SocketAddr::from(([0, 0, 0, 0], 7403));
+    println!("listening on {}", addr);
+    axum::Server::bind(&addr)
+        .serve(Shared::new(http_grpc))
+        .await
+        .unwrap();
+}
