@@ -53,13 +53,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run build but don't push
-      if: github.ref != 'refs/heads/main'
+    - name: Run the build and create our docker images
       run: earthly --allow-privileged --output --ci +all
-
-    - name: Run build and push containers
-      if: github.ref == 'refs/heads/main'
-      run: earthly --allow-privileged --output --ci --push +all
 
     # If this is a release
     #   create release notes
