@@ -2,7 +2,7 @@ use crate::authentication::Authentication;
 use crate::errors::CustomError;
 use axum::extract::{Extension, Path};
 use axum::response::Html;
-use db::queries::registered_objects;
+use db::queries::space_objects;
 use db::Pool;
 
 pub async fn index(
@@ -15,7 +15,7 @@ pub async fn index(
 
     super::super::rls::set_row_level_security_user(&transaction, &current_user).await?;
 
-    let space_objects = registered_objects::registered_objects()
+    let space_objects = space_objects::space_objects()
         .bind(&transaction, &team_id)
         .all()
         .await?;

@@ -61,7 +61,7 @@ pub fn space_objects(space_objects: Vec<RegisteredObject>, organisation_id: i32)
                                                     }
                                                 }
                                                 td {
-                                                    "{so.designator}"
+                                                    "{so.object_identifier}"
                                                 }
                                                 td {
                                                     super::validation_status::Status {
@@ -74,10 +74,10 @@ pub fn space_objects(space_objects: Vec<RegisteredObject>, organisation_id: i32)
                                                     }
                                                 }
                                                 td {
-                                                    "{so.manoeuvring_strategy}"
+                                                    "{so.manoeuvre_strategy}"
                                                 }
                                                 td {
-                                                    "{so.data_sharing_policy}"
+                                                    "{so.confidentiality}"
                                                 }
                                                 td {
                                                     class: "text-right",

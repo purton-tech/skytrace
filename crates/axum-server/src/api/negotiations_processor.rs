@@ -28,12 +28,12 @@ pub async fn process_negotiations(pool: Pool) -> Result<(), CustomError> {
 
     for conjunction in conjunctions {
         if conjunction.collision_probability > 0.005 {
-            let possible_object_1s = queries::registered_objects::find_object()
+            let possible_object_1s = queries::space_objects::find_object()
                 .bind(&transaction, &conjunction.first_object_id.as_ref())
                 .all()
                 .await?;
 
-            let possible_object_2s = queries::registered_objects::find_object()
+            let possible_object_2s = queries::space_objects::find_object()
                 .bind(&transaction, &conjunction.secondary_object_id.as_ref())
                 .all()
                 .await?;

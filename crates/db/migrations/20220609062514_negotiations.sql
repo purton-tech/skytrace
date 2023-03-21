@@ -112,14 +112,14 @@ CREATE TABLE negotiations (
     cdm_id INT NOT NULL,
     object1_id INT NOT NULL,
     object2_id INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
    CONSTRAINT fk_registered_object1
       FOREIGN KEY(object1_id) 
-	  REFERENCES registered_objects(id)
+	  REFERENCES space_objects(id)
       ON DELETE CASCADE,
    CONSTRAINT fk_registered_object2
       FOREIGN KEY(object2_id) 
-	  REFERENCES registered_objects(id)
+	  REFERENCES space_objects(id)
       ON DELETE CASCADE,
    CONSTRAINT fk_cdm_id
       FOREIGN KEY(cdm_id) 
@@ -134,7 +134,7 @@ CREATE TABLE time_line (
     detail VARCHAR NOT NULL,
     action negotiation_action NOT NULL,
     resulting_status negotiation_status NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
    CONSTRAINT fk_negotiations
       FOREIGN KEY(negotiation_id) 
 	  REFERENCES negotiations(id)
