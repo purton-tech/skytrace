@@ -53,7 +53,7 @@ prepare-cache:
     # Copy in all our crates
     COPY --dir crates crates
     COPY Cargo.lock Cargo.toml .
-    RUN cargo chef prepare --recipe-path recipe.json --bin $AXUM_FOLDER
+    RUN cargo chef prepare --recipe-path recipe.json
     SAVE ARTIFACT recipe.json
 
 build-cache:
