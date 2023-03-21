@@ -89,7 +89,7 @@ pub fn SpaceObjectForm(cx: Scope<FormProps>) -> Element {
                         }
                         option {
                             value: "In Track",
-                            "In Track"
+                            "InTrack"
                         }
                     }
                     Select {
@@ -102,11 +102,11 @@ pub fn SpaceObjectForm(cx: Scope<FormProps>) -> Element {
                         }
                         option {
                             value: "continuous electrical",
-                            "continuous electrical"
+                            "ContinuousElectrical"
                         }
                         option {
                             value: "continuous chemical",
-                            "continuous chemical"
+                            "ContinuousChemical"
                         }
                     }
                     Input {

@@ -1,5 +1,5 @@
 use crate::errors::CustomError;
-use db::{queries, DataSharingPolicy, Pool};
+use db::{queries, Confidentiality, Pool};
 use grpc_api::trace::UploadDataRequest;
 use prost::Message;
 
@@ -43,7 +43,7 @@ pub async fn upload_data(pool: Pool, data_upload: &UploadDataRequest) -> Result<
                             &byte_data.as_ref(),
                             &&cdm_json,
                             &"Empty".as_bytes(),
-                            &DataSharingPolicy::Public,
+                            &Confidentiality::Public,
                         )
                         .await?;
                 }

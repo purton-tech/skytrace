@@ -12,7 +12,7 @@ SELECT
     coalesce((json -> 'body' -> 'relative_metadata_data' -> 'miss_distance' ->> 'value')::float, 0.0) as miss_distance,
     coalesce(json -> 'body' -> 'relative_metadata_data' ->> 'tca', '') as time_of_closest_approach,
     encode(signature::bytea, 'hex') as signature,
-    sharing_policy,
+    confidentiality,
     updated_at,
     created_at
 FROM
@@ -48,9 +48,9 @@ LIMIT :page_size;
 
 --! add_conjunction
 INSERT INTO conjunctions 
-    (organisation_id, protobuf, json, signature, sharing_policy)
+    (organisation_id, protobuf, json, signature, confidentiality)
 VALUES
-    (:organisation_id, :protobuf, :json, :signature, :sharing_policy);
+    (:organisation_id, :protobuf, :json, :signature, :confidentiality);
 
 --! count_conjunction_by_message_id 
 SELECT
@@ -72,7 +72,7 @@ SELECT DISTINCT
     coalesce((json -> 'body' -> 'relative_metadata_data' -> 'miss_distance' ->> 'value')::float, 0.0) as miss_distance,
     coalesce(json -> 'body' -> 'relative_metadata_data' ->> 'tca', '') as time_of_closest_approach,
     encode(signature::bytea, 'hex') as signature,
-    sharing_policy,
+    confidentiality,
     updated_at,
     created_at
 FROM

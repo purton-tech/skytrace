@@ -4,9 +4,9 @@
 SELECT
     n.id,
     n.object1_id,
-    (SELECT name FROM registered_objects WHERE id = n.object1_id) as object1_name,
+    (SELECT name FROM space_objects WHERE id = n.object1_id) as object1_name,
     object2_id,
-    (SELECT name FROM registered_objects WHERE id = n.object2_id) as object2_name,
+    (SELECT name FROM space_objects WHERE id = n.object2_id) as object2_name,
     (SELECT resulting_status FROM time_line WHERE negotiation_id = n.id ORDER BY created_at DESC LIMIT 1) as status,
     -- Convert times to ISO 8601 string.
     trim(both '"' from to_json(n.created_at)::text) as created_at
@@ -18,9 +18,9 @@ ORDER BY created_at DESC;
 SELECT
     n.id,
     n.object1_id,
-    (SELECT name FROM registered_objects WHERE id = n.object1_id) as object1_name,
+    (SELECT name FROM space_objects WHERE id = n.object1_id) as object1_name,
     object2_id,
-    (SELECT name FROM registered_objects WHERE id = n.object2_id) as object2_name,
+    (SELECT name FROM space_objects WHERE id = n.object2_id) as object2_name,
     (SELECT resulting_status FROM time_line WHERE negotiation_id = n.id ORDER BY created_at DESC LIMIT 1) as status,
     -- Convert times to ISO 8601 string.
     trim(both '"' from to_json(n.created_at)::text) as created_at

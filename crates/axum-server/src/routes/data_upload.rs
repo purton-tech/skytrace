@@ -6,7 +6,7 @@ use axum::{
     routing::post,
     Router,
 };
-use db::{queries, DataSharingPolicy, Pool};
+use db::{queries, Confidentiality, Pool};
 use prost::Message; // So we can use decode on a proto message
 use serde::{Deserialize, Serialize};
 
@@ -54,7 +54,7 @@ pub async fn upload(
                             &byte_data.as_ref(),
                             &&cdm_json,
                             &sig_data.as_ref(),
-                            &DataSharingPolicy::Public,
+                            &Confidentiality::Public,
                         )
                         .await?;
                 }
@@ -71,7 +71,7 @@ pub async fn upload(
                             &byte_data.as_ref(),
                             &&oem_json,
                             &sig_data.as_ref(),
-                            &DataSharingPolicy::Public,
+                            &Confidentiality::Public,
                         )
                         .await?;
                 }
@@ -88,7 +88,7 @@ pub async fn upload(
                             &byte_data.as_ref(),
                             &&opm_json,
                             &sig_data.as_ref(),
-                            &DataSharingPolicy::Public,
+                            &Confidentiality::Public,
                         )
                         .await?;
                 }

@@ -4,8 +4,8 @@ use axum::{
     extract::{Extension, Form, Path},
     response::IntoResponse,
 };
-use db::queries::registered_objects;
-use db::types::public::CatalogueName;
+use db::queries::space_objects;
+use db::types::public::{AvoidanceStrategy, IdentifierType, ManoeuvreStrategy};
 use db::Pool;
 use serde::Deserialize;
 use validator::Validate;
@@ -38,38 +38,47 @@ pub async fn add_space_object(
 
     super::super::rls::set_row_level_security_user(&transaction, &current_user).await?;
 
+    let man_strat = match new_space_object.manoeuvering_strategy.as_str() {
+        "Impulsive" => ManoeuvreStrategy::Impulsive,
+        "ContinuousElectrical" => ManoeuvreStrategy::ContinuousElectrical,
+        _ => ManoeuvreStrategy::ContinuousChemical,
+    };
+
+    let avoid_strat = match new_space_object.avoidance_strategy.as_str() {
+        "Thrusting" => AvoidanceStrategy::Thrusting,
+        _ => AvoidanceStrategy::InTrack,
+    };
+
     if new_space_object.validate().is_ok() {
-        let object_id = registered_objects::add_object()
+        let object_id = space_objects::add_object()
             .bind(
                 &transaction,
                 &team_id,
                 &new_space_object.name.as_ref(),
                 &new_space_object.manoeuvrability,
                 &new_space_object.implementation_latency,
-                &new_space_object.avoidance_strategy.as_ref(),
-                &new_space_object.manoeuvering_strategy.as_ref(),
+                &avoid_strat,
+                &man_strat,
                 &new_space_object.remaining_fuel.parse::<f64>().ok(),
             )
             .one()
             .await?;
 
-        registered_objects::add_designator()
+        space_objects::add_designator()
             .bind(
                 &transaction,
                 &object_id,
-                &new_space_object.name.as_ref(),
                 &new_space_object.cospar_id.as_ref(),
-                &CatalogueName::Cospar,
+                &IdentifierType::Cospar,
             )
             .await?;
 
-        registered_objects::add_designator()
+        space_objects::add_designator()
             .bind(
                 &transaction,
                 &object_id,
-                &new_space_object.name.as_ref(),
                 &new_space_object.norad_id.as_ref(),
-                &CatalogueName::Satcat,
+                &IdentifierType::Satcat,
             )
             .await?;
     }
