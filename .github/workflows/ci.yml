@@ -59,7 +59,12 @@ jobs:
       run: earthly --allow-privileged --output --ci --push +all
 
     - name: See what images we have
-      run: docker images ls
+      run: |
+        docker pull ghcr.io/purton-tech/skytrace:latest
+        docker pull ghcr.io/purton-tech/skytrace-migrations:latest
+        docker pull ghcr.io/purton-tech/skytrace-envoy:latest
+        docker pull ghcr.io/purton-tech/skytrace-space-track-feed:latest
+        docker images ls
 
 
     # If this is a release
