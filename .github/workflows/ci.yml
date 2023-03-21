@@ -50,8 +50,17 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run the build and create our docker images
+    - name: Run build but don't push
+      if: github.ref != 'refs/heads/main'
       run: earthly --allow-privileged --output --ci +all
+
+    - name: Run build and push containers
+      if: github.ref == 'refs/heads/main'
+      run: earthly --allow-privileged --output --ci --push +all
+
+    - name: See what images we have
+      run: docker images ls
+
 
     # If this is a release
     #   create release notes
