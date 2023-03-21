@@ -54,8 +54,9 @@ jobs:
       run: earthly --allow-privileged --output --ci +all
 
     # If this is a release
-    #   create release notes
-    #   set the docker version
+    # create release notes
+    # set the docker version
+    # https://github.com/semantic-release-plus/semantic-release-plus/tree/master/packages/plugins/docker
     #   
     - name: Semantic Release
       run: | 
