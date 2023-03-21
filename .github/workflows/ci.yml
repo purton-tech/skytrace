@@ -50,22 +50,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run build but don't push
-      if: github.ref != 'refs/heads/main'
+    - name: Run the build
       run: earthly --allow-privileged --output --ci +all
-
-    - name: Run build and push containers
-      if: github.ref == 'refs/heads/main'
-      run: earthly --allow-privileged --output --ci --push +all
-
-    - name: See what images we have
-      run: |
-        docker pull ghcr.io/purton-tech/skytrace:latest
-        docker pull ghcr.io/purton-tech/skytrace-migrations:latest
-        docker pull ghcr.io/purton-tech/skytrace-envoy:latest
-        docker pull ghcr.io/purton-tech/skytrace-space-track-feed:latest
-        docker images ls
-
 
     # If this is a release
     #   create release notes
