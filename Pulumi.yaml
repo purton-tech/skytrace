@@ -26,11 +26,11 @@ variables:
         app: envoy
     authLabels:
         app: auth
-    version: 1.0.14
-    hash-skytrace: sha256:50a0eb44d01d60a5d6402db660d3024ee0f34818c66464390a69c7c6d323fe82
-    hash-skytrace-envoy: sha256:9109c4d0eed8a299619f13befe4743e3965d58bae56bccfbbca79a710f1a8be2
-    hash-skytrace-migrations: sha256:3e0a2fc8496ac6191674fab2999b7732c19371396d579f8217ce3b72db957181
-    hash-skytrace-space-track-feed: sha256:766fab3d4ad1f592d17b73d6afab1903b7ea1cdc1d0d634dc66abd1cbe815a3f
+    version: 1.0.15
+    hash-skytrace: sha256:8ab21e685f7e6defdc1ab757cffd3f166aea800035acd10c6b7381fbd662a3b3
+    hash-skytrace-envoy: sha256:5de55871f7636773ae8774281c676cefb76decf74eb9860d1af3a67af978d8ec
+    hash-skytrace-migrations: sha256:c9c3be8056bf5898926fda6efb04541705b3f25a33617aa1de3c6f8542973f82
+    hash-skytrace-space-track-feed: sha256:ced9e3b331339e32ac62886476ac072f18db5ede5d5a6ec0f41a7d333ee6e46a
     trace-db-migrations: ghcr.io/purton-tech/skytrace-migrations:${version}@${hash-skytrace-migrations}
     trace-envoy: ghcr.io/purton-tech/skytrace-envoy:${version}@${hash-skytrace-envoy}
     trace-server: ghcr.io/purton-tech/skytrace:${version}@${hash-skytrace}
