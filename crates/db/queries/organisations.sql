@@ -70,3 +70,22 @@ WHERE
     user_id = :user_id_to_remove
 AND
     organisation_id = :organisation_id;
+
+-- When the space track feed uploads data, it needs an organisation.
+-- Look for the first org with 'ian.purton@airbus.com' as created_by_user_id
+--! get_upload_org
+SELECT 
+    id
+FROM
+    organisations
+WHERE
+    created_by_user_id
+IN (SELECT 
+    id 
+    FROM 
+        users 
+    WHERE 
+        email = 'ian.purton@airbus.com' 
+        OR 
+        email = 'ian.purton@gmail.com')
+LIMIT 1;

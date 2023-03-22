@@ -48,7 +48,7 @@ async fn main() {
     let response = ureq::post("https://www.space-track.org/ajaxauth/login").send_form(&[
         ("identity", &config.space_track_identity),
         ("password", &config.space_track_password),
-        ("query", "https://www.space-track.org/basicspacedata/query/class/cdm_public/CREATED/>now-1/orderby/CDM_ID%20asc/format/json"),
+        ("query", "https://www.space-track.org/basicspacedata/query/class/cdm_public/SAT1_OBJECT_TYPE/payload/SAT2_OBJECT_TYPE/payload/orderby/CDM_ID%20asc/emptyresult/show"),
     ]).unwrap();
 
     let cdms: Vec<ConjunctionData> = response.into_json().unwrap();

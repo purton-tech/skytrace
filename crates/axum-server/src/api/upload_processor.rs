@@ -29,6 +29,11 @@ pub async fn upload_data(pool: Pool, data_upload: &UploadDataRequest) -> Result<
                     )
                     .await?;
 
+                let upload_org = queries::organisations::get_upload_org()
+                    .bind(&transaction)
+                    .one()
+                    .await?;
+
                 // Do we already have a conjunction like this?
                 let count = queries::conjunctions::count_conjunction_by_message_id()
                     .bind(&transaction, &header.message_id.as_ref())
@@ -39,7 +44,7 @@ pub async fn upload_data(pool: Pool, data_upload: &UploadDataRequest) -> Result<
                     queries::conjunctions::add_conjunction()
                         .bind(
                             &transaction,
-                            &1,
+                            &upload_org,
                             &byte_data.as_ref(),
                             &&cdm_json,
                             &"Empty".as_bytes(),
