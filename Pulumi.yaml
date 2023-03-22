@@ -31,10 +31,10 @@ variables:
     hash-skytrace-envoy: sha256:9109c4d0eed8a299619f13befe4743e3965d58bae56bccfbbca79a710f1a8be2
     hash-skytrace-migrations: sha256:3e0a2fc8496ac6191674fab2999b7732c19371396d579f8217ce3b72db957181
     hash-skytrace-space-track-feed: sha256:766fab3d4ad1f592d17b73d6afab1903b7ea1cdc1d0d634dc66abd1cbe815a3f
-    trace-db-migrations: purtontech/skytrace-migrations:${version}@${hash-skytrace-migrations}
-    trace-envoy: purtontech/skytrace-envoy:${version}@${hash-skytrace-envoy}
-    trace-server: purtontech/skytrace-server:${version}@${hash-skytrace-server}
-    trace-space-track-feed: purtontech/skytrace-space-track-feed:${version}@${hash-skytrace-space-track-feed}
+    trace-db-migrations: ghcr.io/purton-tech/skytrace-migrations:${version}@${hash-skytrace-migrations}
+    trace-envoy: ghcr.io/purton-tech/skytrace-envoy:${version}@${hash-skytrace-envoy}
+    trace-server: ghcr.io/purton-tech/skytrace:${version}@${hash-skytrace}
+    trace-space-track-feed: ghcr.io/purton-tech/skytrace-space-track-feed:${version}@${hash-skytrace-space-track-feed}
 
 resources:
     envoy-deployment:
