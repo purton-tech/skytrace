@@ -1,1 +1,0 @@
-{{ config.extra.company_address }}
