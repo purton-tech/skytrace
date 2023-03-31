@@ -17,6 +17,7 @@ services:
       dockerfile: Dockerfile
     
     volumes:
+      - ~/.config:/home/vscode/.config
       - ..:/workspace:cached
       # Give access to ssh keys on the host (Is there a better way to do this?)
       - ~/.ssh:/home/host-ssh:cached
