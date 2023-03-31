@@ -1,5 +1,5 @@
 VERSION 0.6
-FROM purtontech/rust-on-nails-devcontainer:1.1.3
+FROM purtontech/rust-on-nails-devcontainer:1.1.8
 
 # Exe names
 ARG APP_NAME=trace

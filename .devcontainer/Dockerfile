@@ -1,4 +1,4 @@
-FROM purtontech/rust-on-nails-devcontainer:1.1.3 AS development
+FROM purtontech/rust-on-nails-devcontainer:1.1.8 AS development
 
 COPY .bash_aliases /home/vscode/.bash_aliases
 
