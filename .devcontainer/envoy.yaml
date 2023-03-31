@@ -104,7 +104,7 @@ static_resources:
               # Everything else passes in to here. The marketing pages
               - match: { prefix: "/" }
                 route: 
-                  host_rewrite_literal: trace-3ja.pages.dev
+                  host_rewrite_literal: skytrace.pages.dev
                   cluster: www
                 typed_per_filter_config:
                   envoy.filters.http.ext_authz:
