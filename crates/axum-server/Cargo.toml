@@ -40,6 +40,8 @@ lettre = { version = "0.10.0-rc.4", default-features = false,  features = ["rust
 validator = { version = "0", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 
+# XML Parsing
+xml-rs = "0"
 
 [dev-dependencies]
 # WebDriver Library for UI testing.

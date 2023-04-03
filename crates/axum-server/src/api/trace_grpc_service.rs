@@ -31,4 +31,17 @@ impl grpc_api::trace::trace_server::Trace for TraceService {
 
         return Ok(Response::new(response));
     }
+
+    async fn upload_xml_data(
+        &self,
+        request: Request<UploadXmlDataRequest>,
+    ) -> Result<Response<EmptyResponse>, Status> {
+        let data_upload = request.into_inner();
+
+        super::xml_upload_processor::upload_xml_data(self.pool.clone(), &data_upload).await?;
+
+        let response = EmptyResponse {};
+
+        return Ok(Response::new(response));
+    }
 }

@@ -13,6 +13,9 @@ service Trace {
     // *Note*: This method can be called within a loop for batch data uploads.
     rpc UploadData(UploadDataRequest) returns (EmptyResponse) {};
 
+    // upload XML data message
+    rpc UploadXMLData(UploadXMLDataRequest) returns (EmptyResponse) {};
+
     // Find any hies and process.
     rpc processNegotiations(EmptyRequest) returns (EmptyResponse) {};
 }
@@ -27,6 +30,12 @@ message DataMessage {
       // CCSDS Tracking Data Message (OPM).
       ccsds.schema.OpmType opm = 3;
     }
+}
+
+// CCSDS data upload request.
+message UploadXMLDataRequest {
+    // CCSDS data message to upload.
+    string msg = 1;
 }
 
 // CCSDS data upload request.
