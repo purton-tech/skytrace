@@ -41,7 +41,8 @@ validator = { version = "0", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 
 # XML Parsing
-xml-rs = "0"
+serde-xml-rs = "0.6.0"
+chrono = "0.4.24"
 
 [dev-dependencies]
 # WebDriver Library for UI testing.
