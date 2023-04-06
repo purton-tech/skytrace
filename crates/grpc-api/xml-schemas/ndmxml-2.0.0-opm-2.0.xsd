@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ndm="urn:ccsds:schema:ndmxml"
+            targetNamespace="urn:ccsds:schema:ndmxml"
+            elementFormDefault="qualified" 
+            attributeFormDefault="unqualified">
+
+<!--********************************************************************-->
+<!-- NOTE: This is version 2.0, Rev 0 of the NDM/XML Schema (07/18/2020)-->
+<!-- If this schema changed in Rev 0, it is noted below, else no change.-->
+<!--********************************************************************-->
+
+
+<!--********************************************************************-->
+<!-- This component of the schema is the "OPM" module, which contains   -->
+<!-- elements that are used exclusively in the Orbit Parameter          -->
+<!-- Message (OPM).                                                     -->
+<!--                                                                    -->
+<!-- Compatible document versions are:                                  -->
+<!--    NDM/XML 505.0-P-1.0.3 Pink Book (07/2020)                       -->
+<!--    ODM     502.0-B-2   Blue Book (11/2009)                         -->
+<!--                                                                    -->
+<!-- *********************  BLUE BOOK CHANGE LOG  ********************* -->
+<!-- 03/14/2010: Original implemementation of schemas.                  -->
+<!-- 10/13/2017: Rev A: Modified to include revA common schemas. Also   -->
+<!--                    modified data type of covarianceMatrixType to   -->
+<!--                    opmCovarianceMatrixType                         -->
+<!-- 08/29/2018: Rev B: Modified to remove revision version from file   -->
+<!--                    names, since file names on SANA were static     -->
+<!--                    and the schemas basically did not work.         -->
+<!-- 07/23/2020: 2.0.0: Updated for NDM/XML 2.0 changes (common, etc.)  -->
+<!--********************************************************************-->
+<!-- Include schema containing common data types, etc.                  -->
+<!--********************************************************************-->
+<xsd:include schemaLocation="./ndmxml-2.0.0-common-2.0.xsd"/>
+<!--********************************************************************-->
+
+<!--********************************************************************-->
+<!-- An OPM consists of a "header" and a "body".  The header is a       -->
+<!-- construct that is shared by all NDM's, found in the "common" schema-->
+<!--********************************************************************-->
+<xsd:complexType name="opmType">
+   <xsd:sequence>
+      <xsd:element name="header" type="ndm:ndmHeader"/>
+      <xsd:element name="body" type="ndm:opmBody"/>
+   </xsd:sequence>
+   <xsd:attribute  name="id"      use="required"  fixed="CCSDS_OPM_VERS"/>
+   <xsd:attribute  name="version" use="required"  fixed="2.0"/>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OPM "body" consists of a single "segment", described below.    -->
+<!--********************************************************************-->
+<xsd:complexType name="opmBody">
+   <xsd:sequence>
+      <xsd:element name="segment" type="ndm:opmSegment"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OPM "segment" consists of a "metadata" section and a "data"    -->
+<!-- section.  Structurally it is not strictly necessary, however, for  -->
+<!-- symmetry with the OEM it is included in the OPM structure.         -->
+<!--********************************************************************-->
+<xsd:complexType name="opmSegment">
+   <xsd:sequence>
+      <xsd:element name="metadata" type="ndm:opmMetadata"/>
+      <xsd:element name="data" type="ndm:opmData"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OPM Metadata Section                                               -->
+<!--********************************************************************-->
+<xsd:complexType name="opmMetadata">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" 
+         maxOccurs="unbounded"/>
+      <xsd:element name="OBJECT_NAME" type="xsd:string"/>
+      <xsd:element name="OBJECT_ID" type="xsd:string"/>
+      <xsd:element name="CENTER_NAME" type="xsd:string"/>
+      <xsd:element name="REF_FRAME" type="xsd:string"/>
+      <xsd:element name="REF_FRAME_EPOCH" type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="TIME_SYSTEM" type="xsd:string"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OPM Data Section                                                   -->
+<!--********************************************************************-->
+<xsd:complexType name="opmData">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" 
+         maxOccurs="unbounded"/>
+      <xsd:element name="stateVector" type="ndm:stateVectorType"/>
+      <xsd:element name="keplerianElements" type="ndm:keplerianElementsType" 
+         minOccurs="0"/>
+      <xsd:element name="spacecraftParameters" type="ndm:spacecraftParametersType" 
+         minOccurs="0"/>
+      <xsd:element name="covarianceMatrix" type="ndm:opmCovarianceMatrixType" 
+         minOccurs="0"/>
+      <xsd:element name="maneuverParameters" type="ndm:maneuverParametersType" 
+         minOccurs="0" 
+         maxOccurs="unbounded"/>
+      <xsd:element name="userDefinedParameters"  type="ndm:userDefinedType" 
+         minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- "Logical Blocks" Unique to the OPM (stateVector is shared, so it   -->
+<!-- is found in the "common" schema).                                  -->
+<!--********************************************************************-->
+<xsd:complexType name="keplerianElementsType">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="SEMI_MAJOR_AXIS" type="ndm:distanceType"/>
+      <xsd:element name="ECCENTRICITY" type="ndm:nonNegativeDouble"/>
+      <xsd:element name="INCLINATION" type="ndm:inclinationType"/>
+      <xsd:element name="RA_OF_ASC_NODE" type="ndm:angleType"/>
+      <xsd:element name="ARG_OF_PERICENTER" type="ndm:angleType"/>
+      <xsd:choice>
+         <xsd:element name="TRUE_ANOMALY" type="ndm:angleType"/>
+         <xsd:element name="MEAN_ANOMALY" type="ndm:angleType"/>  
+      </xsd:choice>
+      <xsd:element name="GM" type="ndm:gmType"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="maneuverParametersType">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="MAN_EPOCH_IGNITION" type="ndm:epochType"/>
+      <xsd:element name="MAN_DURATION" type="ndm:durationType"/>
+      <xsd:element name="MAN_DELTA_MASS" type="ndm:deltamassType"/>
+      <xsd:element name="MAN_REF_FRAME" type="xsd:string"/>
+      <xsd:element name="MAN_DV_1" type="ndm:velocityType"/>
+      <xsd:element name="MAN_DV_2" type="ndm:velocityType"/>
+      <xsd:element name="MAN_DV_3" type="ndm:velocityType"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+</xsd:schema>

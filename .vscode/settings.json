@@ -10,4 +10,5 @@
             "--proto_path=protos" // relative to grpc/
         ]
     },
+    "rust-analyzer.showUnlinkedFileNotification": false,
 }

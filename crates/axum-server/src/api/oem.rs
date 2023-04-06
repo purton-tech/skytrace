@@ -1,4 +1,151 @@
+use grpc_api::ccsds::schema;
+use grpc_api::trace;
 use serde::{Deserialize, Serialize};
+use serde_xml_rs::{self, EventReader, ParserConfig};
+
+use crate::errors::CustomError;
+
+pub async fn convert_to_proto(xml: &str) -> Result<trace::UploadDataRequest, CustomError> {
+    let config = ParserConfig::new()
+        .trim_whitespace(false)
+        .whitespace_to_characters(false);
+    let mut deserializer =
+        serde_xml_rs::Deserializer::new(EventReader::new_with_config(xml.as_bytes(), config));
+    let oem = Oem::deserialize(&mut deserializer).unwrap();
+
+    let segments: Vec<schema::OemSegment> = oem
+        .body
+        .segment
+        .iter()
+        .map(|segment| {
+            schema::OemSegment {
+                metadata: Some(schema::OemMetadata {
+                    object_name: segment.metadata.object_name.clone(),
+                    object_id: segment.metadata.object_id.clone(),
+                    center_name: segment.metadata.center_name.clone(),
+                    ref_frame: segment.metadata.ref_frame.clone(),
+                    time_system: segment.metadata.time_system.clone(),
+                    start_time: segment.metadata.start_time.clone(),
+                    useable_start_time: segment.metadata.useable_start_time.clone(),
+                    useable_stop_time: segment.metadata.useable_stop_time.clone(),
+                    stop_time: segment.metadata.stop_time.clone(),
+                    interpolation: segment.metadata.interpolation.clone(),
+                    interpolation_degree: segment.metadata.interpolation_degree as u32,
+                    ..Default::default()
+                }),
+                data: Some(schema::OemData {
+                    comment: segment.data.comments.clone(),
+                    state_vector: segment
+                        .data
+                        .state_vectors
+                        .iter()
+                        .map(|state_vector| schema::StateVectorAccType {
+                            epoch: state_vector.epoch.clone(),
+                            x: convert_to_position_units(state_vector.x),
+                            y: convert_to_position_units(state_vector.y),
+                            z: convert_to_position_units(state_vector.z),
+                            x_dot: convert_to_velocity_units(state_vector.x_dot),
+                            y_dot: convert_to_velocity_units(state_vector.y_dot),
+                            z_dot: convert_to_velocity_units(state_vector.z_dot),
+                            x_ddot: convert_to_acc_type(state_vector.x_ddot),
+                            y_ddot: convert_to_acc_type(state_vector.y_ddot),
+                            z_ddot: convert_to_acc_type(state_vector.z_ddot),
+                        })
+                        .collect(),
+                    covariance_matrix: segment
+                        .data
+                        .covariance_matrices
+                        .iter()
+                        .map(|covariance_matrix| schema::OemCovarianceMatrixType {
+                            //epoch: covariance_matrix.epoch.clone(),
+                            //cov_ref_frame: covariance_matrix.cov_ref_frame.clone(),
+                            cx_x: convert_to_position_covariance_units(covariance_matrix.cx_x),
+                            cy_x: convert_to_position_covariance_units(covariance_matrix.cy_x),
+                            cy_y: convert_to_position_covariance_units(covariance_matrix.cy_y),
+                            cz_x: convert_to_position_covariance_units(covariance_matrix.cz_x),
+                            cz_y: convert_to_position_covariance_units(covariance_matrix.cz_y),
+                            cz_z: convert_to_position_covariance_units(covariance_matrix.cz_z),
+                            cx_dot_x: convert_to_position_velocity_covariance_units(
+                                covariance_matrix.cx_dot_x,
+                            ),
+                            cx_dot_y: convert_to_position_velocity_covariance_units(
+                                covariance_matrix.cx_dot_y,
+                            ),
+                            cx_dot_z: convert_to_position_velocity_covariance_units(
+                                covariance_matrix.cx_dot_z,
+                            ),
+                            cx_dot_x_dot: convert_to_velocity_covariance_units(
+                                covariance_matrix.cx_dot_x_dot,
+                            ),
+                            ..Default::default()
+                        })
+                        .collect(),
+                }),
+            }
+        })
+        .collect();
+
+    let upload_data_request = trace::UploadDataRequest {
+        msg: Some(grpc_api::trace::DataMessage {
+            data: Some(trace::data_message::Data::Oem(schema::OemType {
+                header: Some(schema::NdmHeader {
+                    comment: oem.header.comments,
+                    creation_date: oem.header.creation_date,
+                    originator: oem.header.originator,
+                }),
+                body: Some(schema::OemBody { segment: segments }),
+                ..Default::default()
+            })),
+        }),
+        signature: "".to_string(),
+    };
+
+    Ok(upload_data_request)
+}
+
+fn convert_to_velocity_covariance_units(value: f64) -> Option<schema::VelocityCovarianceType> {
+    Some(schema::VelocityCovarianceType {
+        value,
+        units: schema::VelocityCovarianceUnits::Unspecified.into(),
+    })
+}
+
+fn convert_to_position_velocity_covariance_units(
+    value: f64,
+) -> Option<schema::PositionVelocityCovarianceType> {
+    Some(schema::PositionVelocityCovarianceType {
+        value,
+        units: schema::PositionVelocityCovarianceUnits::Unspecified.into(),
+    })
+}
+
+fn convert_to_position_covariance_units(value: f64) -> Option<schema::PositionCovarianceType> {
+    Some(schema::PositionCovarianceType {
+        value,
+        units: schema::PositionCovarianceUnits::Unspecified.into(),
+    })
+}
+
+fn convert_to_position_units(value: f64) -> Option<schema::PositionType> {
+    Some(schema::PositionType {
+        value,
+        units: schema::PositionUnits::Unspecified.into(),
+    })
+}
+
+fn convert_to_velocity_units(value: f64) -> Option<schema::VelocityType> {
+    Some(schema::VelocityType {
+        value,
+        units: schema::VelocityUnits::Unspecified.into(),
+    })
+}
+
+fn convert_to_acc_type(value: f64) -> Option<schema::AccType> {
+    Some(schema::AccType {
+        value,
+        units: schema::AccUnits::Unspecified.into(),
+    })
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Oem {
@@ -20,7 +167,7 @@ struct Header {
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Body {
-    segment: Segment,
+    segment: Vec<Segment>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -220,18 +367,10 @@ mod tests {
     </oem>";
 
     use super::*;
-    use serde_xml_rs::{self, EventReader, ParserConfig};
 
-    #[test]
-    pub fn load_xml() {
-        let config = ParserConfig::new()
-            .trim_whitespace(false)
-            .whitespace_to_characters(false);
-        let mut deserializer = serde_xml_rs::Deserializer::new(EventReader::new_with_config(
-            OEM_XML.as_bytes(),
-            config,
-        ));
-        let oem = Oem::deserialize(&mut deserializer).unwrap();
+    #[tokio::test]
+    pub async fn load_xml() {
+        let oem = convert_to_proto(OEM_XML).await.unwrap();
         println!("{:#?}", oem);
     }
 }

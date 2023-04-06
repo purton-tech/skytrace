@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ndm="urn:ccsds:schema:ndmxml"
+            targetNamespace="urn:ccsds:schema:ndmxml"
+            elementFormDefault="qualified" 
+            attributeFormDefault="unqualified">
+
+<!--********************************************************************-->
+<!-- NOTE: This is version 2.0, Rev 0 of the NDM/XML Schema (07/18/2020)-->
+<!-- If this schema changed in Rev 0, it is noted below, else no change.-->
+<!--********************************************************************-->
+
+
+<!--********************************************************************--> 
+<!-- Compatible document versions are:                                  --> 
+<!-- NDM/XML 505.0-B-1 Blue Book (12/2010)                              --> 
+<!-- CDM 508.0-B-1 Blue Book (06/2013)                                  -->
+<!--                                                                    --> 
+<!--********************* BLUE BOOK CHANGE LOG *************************--> 
+<!-- 03/03/2013: Original implementation of CDM XML schema.             --> 
+<!-- 10/13/2017: Rev A: Modified to include revA common schemas.        -->
+<!-- 08/29/2018: Rev B: Modified to remove revision version from file   -->
+<!--                    names, since file names on SANA were static     -->
+<!--                    and the schemas basically did not work.         -->
+<!--********************************************************************--> 
+<!-- Include schema containing common data types, etc.                  -->
+<!--********************************************************************-->
+<xsd:include schemaLocation="./ndmxml-2.0.0-common-2.0.xsd"/>
+<!--********************************************************************-->
+
+<!--********************************************************************--> 
+<!-- A CDM consists of a "header" and a "body".                         --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmType">
+   <xsd:sequence>
+      <xsd:element name="header" type="ndm:cdmHeader"/>
+      <xsd:element name="body" type="ndm:cdmBody"/>
+   </xsd:sequence>
+   <xsd:attribute name="id" use="required" fixed="CCSDS_CDM_VERS"/>
+   <xsd:attribute name="version" use="required" fixed="1.0"/>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- A CDM header                                                       --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmHeader">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" 
+         maxOccurs="unbounded"/>
+      <xsd:element name="CREATION_DATE" type="ndm:epochType"/>
+      <xsd:element name="ORIGINATOR" type="xsd:string"/>
+      <xsd:element name="MESSAGE_FOR" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="MESSAGE_ID" type="xsd:string"/> 
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- The CDM "body" consists of relative metadata/data and              --> 
+<!-- two segments, described below.                                     --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmBody">
+   <xsd:sequence>
+      <xsd:element name="relativeMetadataData" type="ndm:relativeMetadataData"/>
+      <xsd:element name="segment" type="ndm:cdmSegment" minOccurs="2"
+         maxOccurs="2" />
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- The CDM relative metadata and data section.                        --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="relativeMetadataData">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0"
+         maxOccurs="unbounded"/>
+      <xsd:element name="TCA" type="ndm:epochType"/>
+      <xsd:element name="MISS_DISTANCE" type="ndm:lengthType"/>
+      <xsd:element name="RELATIVE_SPEED" type="ndm:dvType" minOccurs="0"/>
+      <xsd:element name="relativeStateVector" type="ndm:relativeStateVectorType"
+         minOccurs="0"/>
+      <xsd:element name="START_SCREEN_PERIOD" type="ndm:epochType"
+         minOccurs="0"/>
+      <xsd:element name="STOP_SCREEN_PERIOD" type="ndm:epochType" 
+         minOccurs="0"/>
+      <xsd:element name="SCREEN_VOLUME_FRAME" type="ndm:screenVolumeFrameType"
+         minOccurs="0"/>
+      <xsd:element name="SCREEN_VOLUME_SHAPE" type="ndm:screenVolumeShapeType"
+         minOccurs="0"/>
+      <xsd:element name="SCREEN_VOLUME_X" type="ndm:lengthType" minOccurs="0"/>
+      <xsd:element name="SCREEN_VOLUME_Y" type="ndm:lengthType" minOccurs="0"/>
+      <xsd:element name="SCREEN_VOLUME_Z" type="ndm:lengthType" minOccurs="0"/>
+      <xsd:element name="SCREEN_ENTRY_TIME" type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="SCREEN_EXIT_TIME" type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="COLLISION_PROBABILITY" type="ndm:probabilityType"
+         minOccurs="0"/>
+      <xsd:element name="COLLISION_PROBABILITY_METHOD" type="xsd:string" 
+         minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- The CDM "segment" consists of a "metadata" section and a "data"    --> 
+<!-- section.                                                           --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmSegment">
+   <xsd:sequence>
+      <xsd:element name="metadata" type="ndm:cdmMetadata"/>
+      <xsd:element name="data" type="ndm:cdmData"/>
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- CDM metadata section.                                              --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmMetadata">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0"
+         maxOccurs="unbounded"/>
+      <xsd:element name="OBJECT" type="ndm:objectType" />
+      <xsd:element name="OBJECT_DESIGNATOR" type="xsd:string" />
+      <xsd:element name="CATALOG_NAME" type="xsd:string" />
+      <xsd:element name="OBJECT_NAME" type="xsd:string" />
+      <xsd:element name="INTERNATIONAL_DESIGNATOR" type="xsd:string"/>
+      <xsd:element name="OBJECT_TYPE" type="ndm:objectDescriptionType" 
+         minOccurs="0" />
+      <xsd:element name="OPERATOR_CONTACT_POSITION" type="xsd:string"
+         minOccurs="0" />
+      <xsd:element name="OPERATOR_ORGANIZATION" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="OPERATOR_PHONE" type="xsd:string" minOccurs="0" />
+      <xsd:element name="OPERATOR_EMAIL" type="xsd:string" minOccurs="0" />
+      <xsd:element name="EPHEMERIS_NAME" type="xsd:string" />
+      <xsd:element name="COVARIANCE_METHOD" type="ndm:covarianceMethodType" />
+      <xsd:element name="MANEUVERABLE" type="ndm:maneuverableType" />
+      <xsd:element name="ORBIT_CENTER" type="xsd:string" minOccurs="0" />
+      <xsd:element name="REF_FRAME" type="ndm:referenceFrameType" />
+      <xsd:element name="GRAVITY_MODEL" type="xsd:string" minOccurs="0" />
+      <xsd:element name="ATMOSPHERIC_MODEL" type="xsd:string" minOccurs="0" />
+      <xsd:element name="N_BODY_PERTURBATIONS" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="SOLAR_RAD_PRESSURE" type="ndm:yesNoType" minOccurs="0"/>
+      <xsd:element name="EARTH_TIDES" type="ndm:yesNoType" minOccurs="0" />
+      <xsd:element name="INTRACK_THRUST" type="ndm:yesNoType" minOccurs="0" />
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- CDM data section.                                                  --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="cdmData">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0"
+         maxOccurs="unbounded"/>
+      <xsd:element name="odParameters" type="ndm:odParametersType"
+         minOccurs="0"/>
+      <xsd:element name="additionalParameters" type="ndm:additionalParametersType"
+         minOccurs="0"/>
+      <xsd:element name="stateVector" type="ndm:cdmStateVectorType"/>
+      <xsd:element name="covarianceMatrix" type="ndm:cdmCovarianceMatrixType"/>
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<!--********************************************************************--> 
+<!-- Other complex types unique to the CDM.                             --> 
+<!--********************************************************************--> 
+
+<xsd:complexType name="relativeStateVectorType">
+   <xsd:sequence>
+      <xsd:element name="RELATIVE_POSITION_R" type="ndm:lengthType"/>
+      <xsd:element name="RELATIVE_POSITION_T" type="ndm:lengthType"/>
+      <xsd:element name="RELATIVE_POSITION_N" type="ndm:lengthType"/>
+      <xsd:element name="RELATIVE_VELOCITY_R" type="ndm:dvType"/>
+      <xsd:element name="RELATIVE_VELOCITY_T" type="ndm:dvType"/>
+      <xsd:element name="RELATIVE_VELOCITY_N" type="ndm:dvType"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="additionalParametersType">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0"
+         maxOccurs="unbounded"/>
+      <xsd:element name="AREA_PC" type="ndm:areaType" minOccurs="0"/>
+      <xsd:element name="AREA_DRG" type="ndm:areaType" minOccurs="0"/>
+      <xsd:element name="AREA_SRP" type="ndm:areaType" minOccurs="0"/>
+      <xsd:element name="MASS" type="ndm:massType" minOccurs="0"/>
+      <xsd:element name="CD_AREA_OVER_MASS" type="ndm:m2kgType" minOccurs="0"/>
+      <xsd:element name="CR_AREA_OVER_MASS" type="ndm:m2kgType" minOccurs="0"/>
+      <xsd:element name="THRUST_ACCELERATION" type="ndm:ms2Type" minOccurs="0"/>
+      <xsd:element name="SEDR" type="ndm:wkgType" minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType> 
+
+
+<xsd:complexType name="cdmStateVectorType">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" 
+         maxOccurs="unbounded"/>
+      <xsd:element name="X" type="ndm:cdmPositionType"/>
+      <xsd:element name="Y" type="ndm:cdmPositionType"/> 
+      <xsd:element name="Z" type="ndm:cdmPositionType"/>
+      <xsd:element name="X_DOT" type="ndm:cdmVelocityType"/>
+      <xsd:element name="Y_DOT" type="ndm:cdmVelocityType"/>
+      <xsd:element name="Z_DOT" type="ndm:cdmVelocityType"/>
+   </xsd:sequence>
+</xsd:complexType> 
+
+<xsd:complexType name="cdmCovarianceMatrixType">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" minOccurs="0" 
+         maxOccurs="unbounded"/>
+     <xsd:element name="CR_R" type="ndm:m2Type"/>
+      <xsd:element name="CT_R" type="ndm:m2Type"/>
+      <xsd:element name="CT_T" type="ndm:m2Type"/>
+      <xsd:element name="CN_R" type="ndm:m2Type"/>
+      <xsd:element name="CN_T" type="ndm:m2Type"/>
+      <xsd:element name="CN_N" type="ndm:m2Type"/>
+      <xsd:element name="CRDOT_R" type="ndm:m2sType"/>
+      <xsd:element name="CRDOT_T" type="ndm:m2sType"/>
+      <xsd:element name="CRDOT_N" type="ndm:m2sType"/>
+      <xsd:element name="CRDOT_RDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CTDOT_R" type="ndm:m2sType"/>
+      <xsd:element name="CTDOT_T" type="ndm:m2sType"/>
+      <xsd:element name="CTDOT_N" type="ndm:m2sType"/>
+      <xsd:element name="CTDOT_RDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CTDOT_TDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CNDOT_R" type="ndm:m2sType"/>
+      <xsd:element name="CNDOT_T" type="ndm:m2sType"/>
+      <xsd:element name="CNDOT_N" type="ndm:m2sType"/>
+      <xsd:element name="CNDOT_RDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CNDOT_TDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CNDOT_NDOT" type="ndm:m2s2Type"/>
+      <xsd:element name="CDRG_R" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CDRG_T" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CDRG_N" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CDRG_RDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CDRG_TDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CDRG_NDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CDRG_DRG" type="ndm:m4kg2Type" minOccurs="0"/>
+      <xsd:element name="CSRP_R" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CSRP_T" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CSRP_N" type="ndm:m3kgType" minOccurs="0"/>
+      <xsd:element name="CSRP_RDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CSRP_TDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CSRP_NDOT" type="ndm:m3kgsType" minOccurs="0"/>
+      <xsd:element name="CSRP_DRG" type="ndm:m4kg2Type" minOccurs="0"/>
+      <xsd:element name="CSRP_SRP" type="ndm:m4kg2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_R" type="ndm:m2s2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_T" type="ndm:m2s2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_N" type="ndm:m2s2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_RDOT" type="ndm:m2s3Type" minOccurs="0"/>
+      <xsd:element name="CTHR_TDOT" type="ndm:m2s3Type" minOccurs="0"/>
+      <xsd:element name="CTHR_NDOT" type="ndm:m2s3Type" minOccurs="0"/>
+      <xsd:element name="CTHR_DRG" type="ndm:m3kgs2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_SRP" type="ndm:m3kgs2Type" minOccurs="0"/>
+      <xsd:element name="CTHR_THR" type="ndm:m2s4Type" minOccurs="0"/>
+   </xsd:sequence> 
+</xsd:complexType> 
+
+
+<xsd:complexType name="dvType">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double"> 
+         <xsd:attribute name="units" type="ndm:dvUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="dvUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m/s"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="cdmPositionType">
+   <xsd:simpleContent>
+      <xsd:restriction base="ndm:positionType">
+         <xsd:attribute name="units" type="ndm:positionUnits" use="required"/>
+      </xsd:restriction>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+
+<xsd:complexType name="cdmVelocityType">
+           <xsd:simpleContent>
+                <xsd:restriction base="ndm:velocityType">
+                     <xsd:attribute name="units" type="ndm:velocityUnits" use="required"/>
+                </xsd:restriction>
+           </xsd:simpleContent>
+     </xsd:complexType>
+
+
+<xsd:complexType name="m2Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+         <xsd:attribute name="units" type="ndm:m2Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+<xsd:simpleType name="m2Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m2sType">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double"> 
+         <xsd:attribute name="units" type="ndm:m2sUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="m2sUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2/s"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m2s2Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double"> 
+         <xsd:attribute name="units" type="ndm:m2s2Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="m2s2Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2/s**2"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m3kgType">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+         <xsd:attribute name="units" type="ndm:m3kgUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+<xsd:simpleType name="m3kgUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**3/kg"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m3kgsType">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+         <xsd:attribute name="units" type="ndm:m3kgsUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+<xsd:simpleType name="m3kgsUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**3/(kg*s)"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m4kg2Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+         <xsd:attribute name="units" type="ndm:m4kg2Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+<xsd:simpleType name="m4kg2Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**4/kg**2"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m2s3Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double"> 
+         <xsd:attribute name="units" type="ndm:m2s3Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="m2s3Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2/s**3"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m3kgs2Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+         <xsd:attribute name="units" type="ndm:m3kgs2Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType>
+
+<xsd:simpleType name="m3kgs2Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**3/(kg*s**2)"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m2s4Type">
+   <xsd:simpleContent>
+      <xsd:extension base="xsd:double"> 
+         <xsd:attribute name="units" type="ndm:m2s4Units" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="m2s4Units">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2/s**4"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="m2kgType">
+   <xsd:simpleContent>
+      <xsd:extension base="ndm:nonNegativeDouble"> 
+         <xsd:attribute name="units" type="ndm:m2kgUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="m2kgUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="m**2/kg"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:complexType name="wkgType">
+   <xsd:simpleContent>
+      <xsd:extension base="ndm:nonNegativeDouble">
+         <xsd:attribute name="units" type="ndm:wkgUnits" use="required"/>
+      </xsd:extension>
+   </xsd:simpleContent>
+</xsd:complexType> 
+
+<xsd:simpleType name="wkgUnits">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="W/kg"/>
+   </xsd:restriction>
+</xsd:simpleType>
+
+
+<!--********************************************************************--> 
+<!-- Simple types unique to the CDM.                                    --> 
+<!--********************************************************************--> 
+
+<xsd:simpleType name="objectType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="OBJECT1"/>
+      <xsd:enumeration value="object1"/>
+      <xsd:enumeration value="OBJECT2"/>
+      <xsd:enumeration value="object2"/>
+   </xsd:restriction> 
+</xsd:simpleType> 
+
+
+<xsd:simpleType name="screenVolumeFrameType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RTN"/>
+      <xsd:enumeration value="rtn"/>
+      <xsd:enumeration value="TVN"/>
+      <xsd:enumeration value="tvn"/>
+   </xsd:restriction>
+</xsd:simpleType> 
+
+
+<xsd:simpleType name="screenVolumeShapeType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ELLIPSOID"/>
+      <xsd:enumeration value="ellipsoid"/>
+      <xsd:enumeration value="BOX"/>
+      <xsd:enumeration value="box"/>
+   </xsd:restriction>
+</xsd:simpleType> 
+
+
+<xsd:simpleType name="referenceFrameType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EME2000"/>
+      <xsd:enumeration value="eme2000"/>
+      <xsd:enumeration value="GCRF"/>
+      <xsd:enumeration value="gcrf"/>
+      <xsd:enumeration value="ITRF"/>
+      <xsd:enumeration value="itrf"/>
+   </xsd:restriction>
+</xsd:simpleType> 
+
+
+<xsd:simpleType name="covarianceMethodType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CALCULATED"/>
+      <xsd:enumeration value="calculated"/>
+      <xsd:enumeration value="DEFAULT"/>
+      <xsd:enumeration value="default"/>
+   </xsd:restriction>
+</xsd:simpleType> 
+
+
+<xsd:simpleType name="maneuverableType">
+   <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="YES"/>
+      <xsd:enumeration value="yes"/>
+      <xsd:enumeration value="NO"/>
+      <xsd:enumeration value="no"/>
+      <xsd:enumeration value="N/A"/>
+      <xsd:enumeration value="n/a"/>
+   </xsd:restriction>
+</xsd:simpleType> 
+
+
+</xsd:schema> 
