@@ -14,9 +14,14 @@ use http::{header::CONTENT_TYPE, Request};
 use std::net::SocketAddr;
 use tonic::transport::Server;
 use tower::{make::Shared, steer::Steer, BoxError, ServiceExt};
+use tracing::Level;
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt()
+        .with_max_level(Level::DEBUG)
+        .init();
+
     let config = config::Config::new();
 
     let pool = create_pool(&config.database_url);
@@ -60,9 +65,10 @@ async fn main() {
 
     // Listen to incoming gRPC and HTTP requests.
     let addr = SocketAddr::from(([0, 0, 0, 0], 7403));
-    println!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(Shared::new(http_grpc))
-        .await
-        .unwrap();
+    tracing::info!("listening on {}", addr);
+    let server = axum::Server::bind(&addr).serve(Shared::new(http_grpc));
+
+    if let Err(e) = server.await {
+        tracing::error!("server error: {}", e);
+    }
 }

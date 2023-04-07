@@ -35,3 +35,8 @@ RUN curl -L -s https://github.com/Qovery/Replibyte/releases/download/v0.10.0/rep
 # all the volumes configured in the docker-compose.yml
 RUN sudo mkdir -p /workspace/target && sudo chown $USERNAME:$USERNAME /workspace/target
 RUN sudo mkdir -p /workspace/crates/asset-pipeline/node_modules && sudo chown $USERNAME:$USERNAME /workspace/crates/asset-pipeline/node_modules
+
+
+RUN sudo rm -rf /tmp/* && curl -L -s https://github.com/fullstorydev/grpcurl/releases/download/v1.8.7/grpcurl_1.8.7_linux_x86_64.tar.gz | tar xvz -C /tmp \
+    && sudo mv /tmp/grpcurl /usr/bin \
+    && rm -rf grpcurl_1.8.7_linux_x86_64.tar.gz
