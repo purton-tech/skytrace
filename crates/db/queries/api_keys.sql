@@ -19,3 +19,11 @@ INSERT INTO api_keys
 VALUES
     (:user_id, :name, :api_key);
 
+--! get_user_for_key
+SELECT
+    user_id
+FROM
+    api_keys
+WHERE
+    api_key = :api_key;
+
