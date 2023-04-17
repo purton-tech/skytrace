@@ -1,5 +1,5 @@
 use crate::errors::CustomError;
-use db::{queries, Confidentiality, Pool};
+use db::{queries, Confidentiality, Transaction};
 use grpc_api::trace::UploadDataRequest;
 use prost::Message;
 
@@ -10,9 +10,11 @@ use prost::Message;
  * If they don't already have a negotiations entry in the
  * DB then create one.
  */
-pub async fn upload_data(pool: Pool, data_upload: &UploadDataRequest) -> Result<(), CustomError> {
-    let mut client = pool.get().await?;
-
+pub async fn upload_data(
+    transaction: Transaction<'_>,
+    data_upload: &UploadDataRequest,
+    user_id: i32,
+) -> Result<(), CustomError> {
     if let Some(msg) = &data_upload.msg {
         if let Some(grpc_api::trace::data_message::Data::Cdm(cdm)) = &msg.data {
             if let Some(header) = &cdm.header {
@@ -20,11 +22,9 @@ pub async fn upload_data(pool: Pool, data_upload: &UploadDataRequest) -> Result<
 
                 let byte_data = cdm.encode_to_vec();
 
-                let transaction = client.transaction().await?;
-
                 transaction
                     .query(
-                        &format!("SET LOCAL row_level_security.user_id = {}", 1),
+                        &format!("SET LOCAL row_level_security.user_id = {}", user_id),
                         &[],
                     )
                     .await?;

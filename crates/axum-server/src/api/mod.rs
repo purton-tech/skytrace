@@ -1,3 +1,4 @@
+mod authentication;
 pub mod negotiations_processor;
 pub mod oem;
 pub mod trace_grpc_service;

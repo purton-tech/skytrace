@@ -4,6 +4,7 @@
 SELECT
     id,
     name,
+    user_id,
     api_key,
     created_at
 FROM
@@ -19,9 +20,13 @@ INSERT INTO api_keys
 VALUES
     (:user_id, :name, :api_key);
 
---! get_user_for_key
+--! find_api_key : ApiKey
 SELECT
-    user_id
+    id,
+    name,
+    user_id,
+    api_key,
+    created_at
 FROM
     api_keys
 WHERE

@@ -1,13 +1,12 @@
 use crate::errors::CustomError;
-use db::Pool;
+use db::Transaction;
 use grpc_api::trace::UploadXmlDataRequest;
 
 pub async fn upload_xml_data(
-    pool: Pool,
+    transaction: Transaction<'_>,
     data_upload: &UploadXmlDataRequest,
+    user_id: i32,
 ) -> Result<(), CustomError> {
-    let mut _client = pool.get().await?;
-
     // Check to see which type of xml we have
     let data_upload = if data_upload.msg.contains("</oem>") {
         tracing::info!("Received OEM data upload request");
@@ -17,7 +16,7 @@ pub async fn upload_xml_data(
     };
 
     if let Some(data_upload) = data_upload {
-        let result = super::upload_processor::upload_data(pool, &data_upload).await;
+        let result = super::upload_processor::upload_data(transaction, &data_upload, user_id).await;
         if let Err(e) = result {
             tracing::error!("Error uploading data: {}", e);
         }
