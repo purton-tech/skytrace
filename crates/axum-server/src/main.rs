@@ -45,6 +45,11 @@ async fn main() {
         .map_err(BoxError::from)
         .boxed_clone();
 
+    let reflection_service = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(grpc_api::trace::FILE_DESCRIPTOR_SET)
+        .build()
+        .unwrap();
+
     // Handle gRPC API requests
     let grpc = Server::builder()
         .accept_http1(true)
@@ -52,6 +57,7 @@ async fn main() {
         .add_service(tonic_web::enable(TraceServer::new(
             api::trace_grpc_service::TraceService { pool },
         )))
+        .add_service(reflection_service)
         .into_service()
         .map_response(|r| r.map(axum::body::boxed))
         .boxed_clone();
