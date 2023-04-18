@@ -10,7 +10,7 @@ path = "lib.rs"
 
 [dependencies]
 prost = "0"
-tonic = "0"
+tonic = "0.9"
 serde = { version = "1", features = ["derive"] }
 
 [build-dependencies]

@@ -47,9 +47,11 @@ async fn main() {
 
     // Handle gRPC API requests
     let grpc = Server::builder()
-        .add_service(TraceServer::new(api::trace_grpc_service::TraceService {
-            pool,
-        }))
+        .accept_http1(true)
+        // Notice the `enable` method. This gives us gRPC-Web support.
+        .add_service(tonic_web::enable(TraceServer::new(
+            api::trace_grpc_service::TraceService { pool },
+        )))
         .into_service()
         .map_response(|r| r.map(axum::body::boxed))
         .boxed_clone();
