@@ -6,7 +6,7 @@
         display: none;
         grid-area: sidenav;
         height: 100vh;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         // Display flex is set in the responsive css at bottom of the code
         flex-direction: column;
@@ -47,7 +47,7 @@
 
     >.l_content {
         grid-area: main;
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 100vh;
 
         >header {
