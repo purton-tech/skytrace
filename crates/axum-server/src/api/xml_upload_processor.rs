@@ -15,8 +15,6 @@ pub async fn upload_xml_data(
         None
     };
 
-    tracing::debug!("Data upload: {:?}", data_upload);
-
     if let Some(data_upload) = data_upload {
         let result = super::upload_processor::upload_data(transaction, &data_upload, user_id).await;
         if let Err(e) = result {
