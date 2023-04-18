@@ -13,6 +13,8 @@ pub async fn convert_to_proto(xml: &str) -> Result<trace::UploadDataRequest, Cus
         serde_xml_rs::Deserializer::new(EventReader::new_with_config(xml.as_bytes(), config));
     let oem = Oem::deserialize(&mut deserializer).unwrap();
 
+    tracing::debug!("OEM: {:?}", oem);
+
     let segments: Vec<schema::OemSegment> = oem
         .body
         .segment
