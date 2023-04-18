@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ndm="urn:ccsds:schema:ndmxml"
+            targetNamespace="urn:ccsds:schema:ndmxml"
+            elementFormDefault="qualified" 
+            attributeFormDefault="unqualified">
+
+<!--********************************************************************-->
+<!-- NOTE: This is version 2.0, Rev 0 of the NDM/XML Schema (07/18/2020)-->
+<!-- If this schema changed in Rev 0, it is noted below, else no change.-->
+<!--********************************************************************-->
+
+
+<!--********************************************************************-->
+<!-- This component of the schema is the "OEM" module, which contains   -->
+<!-- elements that are used exclusively in the Orbit Ephemeris          -->
+<!-- Message (OEM).                                                     -->
+<!--                                                                    -->
+<!-- Compatible document versions are:                                  -->
+<!--    NDM/XML 505.0-P-1.0.3 Pink Book (07/2020)                       -->
+<!--    ODM     502.0-B-2   Blue Book (11/2009)                         -->
+<!--                                                                    -->
+<!-- *********************  BLUE BOOK CHANGE LOG  ********************* -->
+<!-- 03/14/2010: Original implemementation of schemas.                  -->
+<!-- 10/13/2017: Rev A: Modified to include revA common schemas. Also   -->
+<!--                    modified data type of covarianceMatrixType to   -->
+<!--                    oemCovarianceMatrixType                         -->
+<!-- 08/29/2018: Rev B: Modified to remove revision version from file   -->
+<!--                    names, since file names on SANA were static     -->
+<!--                    and the schemas basically did not work.         -->
+<!-- 07/23/2020: 2.0.0: Updated for NDM/XML 2.0 changes (common, etc.)  -->
+<!--********************************************************************-->
+<!-- Include schema containing common data types, etc.                  -->
+<!--********************************************************************-->
+<xsd:include schemaLocation="./ndmxml-2.0.0-common-2.0.xsd"/>
+<!--********************************************************************-->
+
+<!--********************************************************************-->
+<!-- An OEM consists of a "header" and a "body".  The header is a       -->
+<!-- construct that is shared by all NDM's, found in the "common" schema-->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemType">
+   <xsd:sequence>
+      <xsd:element name="header" type="ndm:ndmHeader"/>
+      <xsd:element name="body"   type="ndm:oemBody"/>       
+   </xsd:sequence>
+   <xsd:attribute name="id"        use="required" fixed="CCSDS_OEM_VERS"/>
+   <xsd:attribute name="version"   use="required" fixed="2.0"/>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OEM "body" consists of 1 or more "segments", described below.  -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemBody">
+   <xsd:sequence>
+      <xsd:element name="segment" type="ndm:oemSegment" 
+         minOccurs="1" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OEM "segment" consists of a "metadata" section and a "data"    -->
+<!-- section.  Note that the segment construct is implied, but not      -->
+<!-- explicitly stated, in the structure of each OEM as described in the-->
+<!-- ODM.  Explicit statement of the segment construct is required in   -->
+<!-- order to enforce the ordering and correspondence of metadata       -->
+<!-- sections and data sections that is described in the ODM.           -->
+<!--********************************************************************-->  
+
+<xsd:complexType name="oemSegment">
+   <xsd:sequence>
+      <xsd:element name="metadata" type="ndm:oemMetadata"/>
+      <xsd:element name="data" type="ndm:oemData"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OEM Metadata Section                                               -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemMetadata">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" 
+         minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="OBJECT_NAME" type="xsd:string"/>
+      <xsd:element name="OBJECT_ID" type="xsd:string"/>
+      <xsd:element name="CENTER_NAME" type="xsd:string"/>
+      <xsd:element name="REF_FRAME" type="xsd:string"/>
+      <xsd:element name="REF_FRAME_EPOCH" type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="TIME_SYSTEM" type="xsd:string"/>
+      <xsd:element name="START_TIME"  type="ndm:epochType"/>
+      <xsd:element name="USEABLE_START_TIME" type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="USEABLE_STOP_TIME"  type="ndm:epochType" minOccurs="0"/>
+      <xsd:element name="STOP_TIME"   type="ndm:epochType"/>
+      <xsd:element name="INTERPOLATION" type="xsd:string"
+         minOccurs="0"/>
+      <xsd:element name="INTERPOLATION_DEGREE" type="xsd:positiveInteger"
+         minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OEM Data Section                                                   -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemData">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" 
+         minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="stateVector" type="ndm:stateVectorAccType" 
+         minOccurs="1" maxOccurs="unbounded"/>
+      <xsd:element name="covarianceMatrix" type="ndm:oemCovarianceMatrixType" 
+         minOccurs="0" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+</xsd:schema>

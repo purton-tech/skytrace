@@ -12,13 +12,6 @@ CREATE TABLE api_keys (
       ON DELETE CASCADE
 );
 
-ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY api_keys_policy ON api_keys
-    FOR ALL
-    USING (user_id = current_setting('row_level_security.user_id')::integer);
-
-
 GRANT SELECT, INSERT, UPDATE, DELETE ON api_keys TO trace_application;
 GRANT SELECT ON api_keys TO trace_readonly;
 

@@ -60,25 +60,18 @@ pub fn orbit_data(
                         DataTable {
                             table {
                                 thead {
-                                    th { "Type" }
-                                    th { "Version" }
                                     th { "Creation Date" }
+                                    th { "Originator" }
                                     th { "Object Name" }
-                                    th { "Probability of Collision" }
+                                    th { "Object ID" }
                                     th {
                                         class: "text-right",
-                                        "Object Id"
+                                        "Action"
                                     }
                                 }
                                 tbody {
                                     cx.props.orbit_data.iter().map(|orbit_data| rsx!(
                                         tr {
-                                            td {
-                                                "Test"
-                                            }
-                                            td {
-                                                "Test"
-                                            }
                                             td {
                                                 "{orbit_data.created_at}"
                                             }

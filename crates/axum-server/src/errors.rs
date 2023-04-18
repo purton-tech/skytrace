@@ -9,6 +9,7 @@ use tonic::{Code, Status};
 pub enum CustomError {
     FaultySetup(String),
     Database(String),
+    Unauthorized(String),
 }
 
 // Allow the use of "{}" format specifier
@@ -16,7 +17,7 @@ impl fmt::Display for CustomError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             CustomError::FaultySetup(ref cause) => write!(f, "Setup Error: {}", cause),
-            //CustomError::Unauthorized(ref cause) => write!(f, "Setup Error: {}", cause),
+            CustomError::Unauthorized(ref cause) => write!(f, "Authentication Error: {}", cause),
             CustomError::Database(ref cause) => {
                 write!(f, "Database Error: {}", cause)
             }
@@ -30,6 +31,7 @@ impl IntoResponse for CustomError {
         let (status, error_message) = match self {
             CustomError::Database(message) => (StatusCode::UNPROCESSABLE_ENTITY, message),
             CustomError::FaultySetup(message) => (StatusCode::UNPROCESSABLE_ENTITY, message),
+            CustomError::Unauthorized(message) => (StatusCode::UNAUTHORIZED, message),
         };
 
         format!("status = {}, message = {}", status, error_message).into_response()
@@ -65,6 +67,7 @@ impl From<CustomError> for Status {
     fn from(error: CustomError) -> Status {
         match error {
             CustomError::Database(cause) => Status::new(Code::Internal, cause),
+            CustomError::Unauthorized(cause) => Status::new(Code::Internal, cause),
             CustomError::FaultySetup(cause) => Status::new(Code::Internal, cause),
         }
     }

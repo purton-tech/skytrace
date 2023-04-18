@@ -14,9 +14,14 @@ use http::{header::CONTENT_TYPE, Request};
 use std::net::SocketAddr;
 use tonic::transport::Server;
 use tower::{make::Shared, steer::Steer, BoxError, ServiceExt};
+use tracing::Level;
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt()
+        .with_max_level(Level::DEBUG)
+        .init();
+
     let config = config::Config::new();
 
     let pool = create_pool(&config.database_url);
@@ -40,11 +45,19 @@ async fn main() {
         .map_err(BoxError::from)
         .boxed_clone();
 
+    let reflection_service = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(grpc_api::trace::FILE_DESCRIPTOR_SET)
+        .build()
+        .unwrap();
+
     // Handle gRPC API requests
     let grpc = Server::builder()
-        .add_service(TraceServer::new(api::trace_grpc_service::TraceService {
-            pool,
-        }))
+        .accept_http1(true)
+        // Notice the `enable` method. This gives us gRPC-Web support.
+        .add_service(tonic_web::enable(TraceServer::new(
+            api::trace_grpc_service::TraceService { pool },
+        )))
+        .add_service(reflection_service)
         .into_service()
         .map_response(|r| r.map(axum::body::boxed))
         .boxed_clone();
@@ -60,9 +73,10 @@ async fn main() {
 
     // Listen to incoming gRPC and HTTP requests.
     let addr = SocketAddr::from(([0, 0, 0, 0], 7403));
-    println!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(Shared::new(http_grpc))
-        .await
-        .unwrap();
+    tracing::info!("listening on {}", addr);
+    let server = axum::Server::bind(&addr).serve(Shared::new(http_grpc));
+
+    if let Err(e) = server.await {
+        tracing::error!("server error: {}", e);
+    }
 }

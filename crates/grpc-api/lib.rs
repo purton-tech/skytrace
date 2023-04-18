@@ -22,4 +22,6 @@ pub mod trace {
     #![allow(clippy::large_enum_variant)]
     #![allow(clippy::derive_partial_eq_without_eq)]
     tonic::include_proto!("trace");
+
+    pub const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("trace_descriptor");
 }
