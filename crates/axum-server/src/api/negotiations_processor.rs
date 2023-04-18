@@ -10,13 +10,13 @@ use db::Pool;
  * If they don't already have a negotiations entry in the
  * DB then create one.
  */
-pub async fn process_negotiations(pool: Pool) -> Result<(), CustomError> {
+pub async fn process_negotiations(pool: Pool, user_id: i32) -> Result<(), CustomError> {
     let mut client = pool.get().await?;
     let transaction = client.transaction().await?;
 
     transaction
         .query(
-            &format!("SET LOCAL row_level_security.user_id = {}", 1),
+            &format!("SET LOCAL row_level_security.user_id = {}", user_id),
             &[],
         )
         .await?;
