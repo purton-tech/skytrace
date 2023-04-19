@@ -2,7 +2,7 @@
     "scripts": {
         "start": "npm run copy-primer && ./patch-turbo.sh && npm run protoc && parcel watch --no-hmr ./index.ts",
         "release": "npm run copy-primer && ./patch-turbo.sh && npm run protoc && parcel build ./index.ts",
-        "protoc": "mkdir -p ./grpc && npx protoc --ts_out ./grpc --proto_path ../grpc-api $(find ../grpc-api -name '*.proto')",
+        "protoc": "mkdir -p ./grpc && npx protoc --ts_out ./grpc --proto_path ../grpc-api/protos $(find ../grpc-api/protos -name '*.proto')",
         "copy-primer": "mkdir -p ./dist && cp ./node_modules/@primer/view-components/app/assets/styles/primer_view_components.css ./dist/"
     },
     "devDependencies": {
