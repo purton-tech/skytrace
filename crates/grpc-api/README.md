@@ -10,4 +10,8 @@ List methods on a service
 
 Call a method
 
-`grpcurl -plaintext localhost:7403 trace.Trace/processNegotiations`
+`grpcurl -H 'x-api-key: API_KEY' -plaintext localhost:7403 trace.Trace/processNegotiations`
+
+Call a method via the Rest API, this needs to go via envoy.
+
+`curl -H 'x-api-key: API_KEY' -X POST localhost:7400/trace.Trace/processNegotiations`
