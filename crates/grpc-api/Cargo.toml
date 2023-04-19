@@ -6,12 +6,24 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
-path = "lib.rs"
 
 [dependencies]
+db = { path = "../db" }
 prost = "0"
 tonic = "0.9"
+serde_json = "1"
 serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", default-features = false, features = ["macros", "rt-multi-thread", "fs"] }
+
+tonic-reflection = "0.9.2"
+
+# XML Parsing
+serde-xml-rs = "0.6.0"
+chrono = "0.4.24"
+
+# Observability
+tracing = "0"
+tracing-subscriber = { version="0", features = ["env-filter"] }
 
 [build-dependencies]
 tonic-build = "0"

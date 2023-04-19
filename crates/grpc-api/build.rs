@@ -12,6 +12,6 @@ fn main() {
         // But this doesn't have Serialice and Deseriealize so we switch it off.
         // Maybe we could use https://github.com/fdeantoni/prost-wkt
         .compile_well_known_types(true)
-        .compile(&["api.proto"], &["./"])
+        .compile(&["api.proto"], &["./protos"])
         .unwrap();
 }

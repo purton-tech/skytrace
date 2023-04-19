@@ -1,6 +1,6 @@
 use crate::errors::CustomError;
+use crate::trace::UploadXmlDataRequest;
 use db::Transaction;
-use grpc_api::trace::UploadXmlDataRequest;
 
 pub async fn upload_xml_data(
     transaction: Transaction<'_>,

@@ -1,5 +1,5 @@
-use grpc_api::ccsds::schema;
-use grpc_api::trace;
+use crate::ccsds::schema;
+use crate::trace;
 use serde::{Deserialize, Serialize};
 use serde_xml_rs::{self, EventReader, ParserConfig};
 
@@ -88,7 +88,7 @@ pub async fn convert_to_proto(xml: &str) -> Result<trace::UploadDataRequest, Cus
         .collect();
 
     let upload_data_request = trace::UploadDataRequest {
-        msg: Some(grpc_api::trace::DataMessage {
+        msg: Some(crate::trace::DataMessage {
             data: Some(trace::data_message::Data::Oem(schema::OemType {
                 header: Some(schema::NdmHeader {
                     comment: oem.header.comments,

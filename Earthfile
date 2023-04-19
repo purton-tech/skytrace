@@ -84,9 +84,16 @@ build:
     SAVE ARTIFACT target/x86_64-unknown-linux-musl/release/$APP_EXE_NAME
     SAVE ARTIFACT target/x86_64-unknown-linux-musl/release/$FEED_EXE_NAME
 
+# To generate a rest API from the proto files we need to create a descriptor set
+api-descriptor:
+    FROM namely/gen-grpc-gateway:1.30_0
+    COPY ./crates/grpc-api/protos /defs
+    RUN entrypoint.sh -f api.proto -l descriptor_set --descr-filename api.pb
+    SAVE ARTIFACT /defs/gen/pb-descriptor_set/api.pb
 
 envoy-container:
     FROM $ENVOY_PROXY
+    COPY +api-descriptor/api.pb /tmp/envoy/api.pb
     COPY .devcontainer/envoy.yaml /etc/envoy/envoy.yaml
     # Point the www route to the cloudflare pages entry
     RUN sed -i '0,/www/{s/www/www-prod/}' /etc/envoy/envoy.yaml

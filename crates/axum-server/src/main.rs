@@ -1,4 +1,3 @@
-mod api;
 mod authentication;
 mod config;
 mod email;
@@ -52,11 +51,10 @@ async fn main() {
 
     // Handle gRPC API requests
     let grpc = Server::builder()
-        .accept_http1(true)
         // Notice the `enable` method. This gives us gRPC-Web support.
-        .add_service(tonic_web::enable(TraceServer::new(
-            api::trace_grpc_service::TraceService { pool },
-        )))
+        .add_service(TraceServer::new(
+            grpc_api::trace_grpc_service::TraceService { pool },
+        ))
         .add_service(reflection_service)
         .into_service()
         .map_response(|r| r.map(axum::body::boxed))

@@ -117,6 +117,19 @@ static_resources:
           http_filters:
           # Convert incoming gRPC web request to proper gRPC
           - name: envoy.filters.http.grpc_web
+          # Create a restful API from our protobuf definitions
+          # https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter
+          - name: envoy.filters.http.grpc_json_transcoder
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
+              proto_descriptor: "/tmp/envoy/api.pb"
+              auto_mapping: true
+              services: ["trace.Trace"]
+              print_options:
+                add_whitespace: true
+                always_print_primitive_fields: true
+                always_print_enums_as_ints: false
+                preserve_proto_field_names: true
           # Use Authn Proxy to authenticate routes.  
           - name: envoy.filters.http.ext_authz
             typed_config:

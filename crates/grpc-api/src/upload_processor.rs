@@ -1,7 +1,7 @@
 use crate::errors::CustomError;
+use crate::trace::data_message::Data;
+use crate::trace::UploadDataRequest;
 use db::{queries, Confidentiality, Transaction};
-use grpc_api::trace::data_message::Data;
-use grpc_api::trace::UploadDataRequest;
 use prost::Message;
 
 /***

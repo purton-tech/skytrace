@@ -695,10 +695,18 @@ checksum = "ad0a93d233ebf96623465aad4046a8d3aa4da22d4f4beba5388838c8a434bbb4"
 name = "grpc-api"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "db",
  "prost",
  "serde",
+ "serde-xml-rs",
+ "serde_json",
+ "tokio",
  "tonic",
  "tonic-build",
+ "tonic-reflection",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -2164,26 +2172,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tonic-web"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21b00ec4842256d1fe0a46176e2ef5bc357664c66e7d91aff5a7d43d83a65f47"
-dependencies = [
- "base64 0.21.0",
- "bytes",
- "futures-core",
- "http",
- "http-body",
- "hyper",
- "pin-project",
- "tonic",
- "tower-http",
- "tower-layer",
- "tower-service",
- "tracing",
-]
-
-[[package]]
 name = "tower"
 version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2242,7 +2230,6 @@ dependencies = [
  "axum",
  "base64 0.13.1",
  "bytes",
- "chrono",
  "db",
  "futures",
  "grpc-api",
@@ -2254,7 +2241,6 @@ dependencies = [
  "rand",
  "reqwest",
  "serde",
- "serde-xml-rs",
  "serde_json",
  "sha2",
  "thirtyfour",
@@ -2262,7 +2248,6 @@ dependencies = [
  "tokio-util",
  "tonic",
  "tonic-reflection",
- "tonic-web",
  "tower",
  "tracing",
  "tracing-subscriber",

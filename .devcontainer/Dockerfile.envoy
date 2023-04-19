@@ -1,3 +1,14 @@
+# To test this build run
+# docker build -t envoy -f .devcontainer/Dockerfile.envoy .
+
+FROM namely/gen-grpc-gateway:1.30_0 AS gateway-generator
+
+COPY ./crates/grpc-api/protos /defs
+
+RUN entrypoint.sh -f api.proto -l descriptor_set --descr-filename api.pb
+
 FROM envoyproxy/envoy:v1.21.2
 
-COPY ./envoy.yaml /etc/envoy/envoy.yaml
+COPY --from=gateway-generator defs/gen/pb-descriptor_set/api.pb /tmp/envoy/api.pb
+
+COPY ./.devcontainer/envoy.yaml /etc/envoy/envoy.yaml
