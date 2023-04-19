@@ -15,3 +15,9 @@ Call a method
 Call a method via the Rest API, this needs to go via envoy.
 
 `curl -H 'x-api-key: API_KEY' -X POST localhost:7400/trace.Trace/processNegotiations`
+
+Post XML file
+
+`export XML_FILE=$(cat OEM.xml)`
+
+`curl -H 'x-api-key: YOWMcHIelrhUcNdzfc97R606DaZFwA' -i -X POST localhost:7400/trace.Trace/UploadXMLData -d "{'msg': '$XML_FILE'}"`
