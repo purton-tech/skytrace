@@ -695,10 +695,19 @@ checksum = "ad0a93d233ebf96623465aad4046a8d3aa4da22d4f4beba5388838c8a434bbb4"
 name = "grpc-api"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "db",
  "prost",
  "serde",
+ "serde-xml-rs",
+ "serde_json",
+ "tokio",
  "tonic",
  "tonic-build",
+ "tonic-reflection",
+ "tonic-web",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -2242,7 +2251,6 @@ dependencies = [
  "axum",
  "base64 0.13.1",
  "bytes",
- "chrono",
  "db",
  "futures",
  "grpc-api",
@@ -2254,7 +2262,6 @@ dependencies = [
  "rand",
  "reqwest",
  "serde",
- "serde-xml-rs",
  "serde_json",
  "sha2",
  "thirtyfour",

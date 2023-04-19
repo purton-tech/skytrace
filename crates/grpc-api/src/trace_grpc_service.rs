@@ -1,5 +1,5 @@
+use crate::trace::*;
 use db::Pool;
-use grpc_api::trace::*;
 use tonic::{Request, Response, Status};
 
 pub struct TraceService {
@@ -7,7 +7,7 @@ pub struct TraceService {
 }
 
 #[tonic::async_trait]
-impl grpc_api::trace::trace_server::Trace for TraceService {
+impl crate::trace::trace_server::Trace for TraceService {
     async fn process_negotiations(
         &self,
         request: Request<EmptyRequest>,

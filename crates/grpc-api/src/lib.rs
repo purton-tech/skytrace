@@ -1,3 +1,11 @@
+mod authentication;
+mod errors;
+pub mod negotiations_processor;
+pub mod oem;
+pub mod trace_grpc_service;
+pub mod upload_processor;
+pub mod xml_upload_processor;
+
 pub mod google {
     pub mod protobuf {
         #![allow(clippy::derive_partial_eq_without_eq)]

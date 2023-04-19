@@ -45,10 +45,6 @@ tracing-subscriber = { version="0", features = ["env-filter"] }
 validator = { version = "0", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 
-# XML Parsing
-serde-xml-rs = "0.6.0"
-chrono = "0.4.24"
-
 [dev-dependencies]
 # WebDriver Library for UI testing.
 thirtyfour = { version = "0", default-features = false, features = [ "reqwest-rustls-tls", "tokio-runtime" ] }
