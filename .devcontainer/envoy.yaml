@@ -94,6 +94,7 @@ static_resources:
               - match: { prefix: "/static" }
                 route: { cluster: app }
                 typed_per_filter_config:
+                  # Switch off authentication
                   envoy.filters.http.ext_authz:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
                     disabled: true
@@ -101,15 +102,18 @@ static_resources:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.LuaPerRoute
                     disabled: true
                     
-              # Everything else passes in to here. The marketing pages
+              # Everything else passes in to here. 
+              # In development this will be routed to zola
+              # In production, we should never get here, cloudflare pages is used instead.
               - match: { prefix: "/" }
                 route: 
-                  host_rewrite_literal: skytrace.pages.dev
                   cluster: www
                 typed_per_filter_config:
+                  # Switch off authentication
                   envoy.filters.http.ext_authz:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
                     disabled: true
+                  # Send our security headers
                   envoy.filters.http.lua:
                     "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.LuaPerRoute
                     name: zola_headers.lua
@@ -227,7 +231,7 @@ static_resources:
                 address: auth
                 port_value: 9090
 
-  # Marketing Pages Development
+  # Marketing Pages - Development Only
   - name: www
     connect_timeout: 1.25s
     type: strict_dns
@@ -242,26 +246,6 @@ static_resources:
               socket_address:
                 address: development
                 port_value: 7404
-
-  # Marketing Pages - Reverse Proxy to Cludflare Pages
-  - name: www-prod
-    type: LOGICAL_DNS
-    connect_timeout: 500s
-    dns_lookup_family: V4_ONLY
-    load_assignment:
-      cluster_name: www
-      endpoints:
-        - lb_endpoints:
-            - endpoint:
-                address:
-                  socket_address:
-                    address: trace-3ja.pages.dev
-                    port_value: 443
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: trace-3ja.pages.dev
 
   # The web application and api server
   - name: app

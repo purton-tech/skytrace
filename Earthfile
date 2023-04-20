@@ -95,8 +95,6 @@ envoy-container:
     FROM $ENVOY_PROXY
     COPY +api-descriptor/api.pb /tmp/envoy/api.pb
     COPY .devcontainer/envoy.yaml /etc/envoy/envoy.yaml
-    # Point the www route to the cloudflare pages entry
-    RUN sed -i '0,/www/{s/www/www-prod/}' /etc/envoy/envoy.yaml
     # The second development entry in our cluster list is the app
     # https://www.linuxquestions.org/questions/programming-9/replace-2nd-occurrence-of-a-string-in-a-file-sed-or-awk-800171/
     RUN sed -i '0,/development/! s/development/app/' /etc/envoy/envoy.yaml
