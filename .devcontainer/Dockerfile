@@ -9,7 +9,7 @@ RUN cat ps1.bash >> ~/.bashrc && sudo rm ps1.bash
 RUN echo 'git config core.hooksPath /workspace/.devcontainer/.githooks' >> ~/.bashrc
 
 # Zola for static content generation
-ARG ZOLA_VERSION=0.15.3
+ARG ZOLA_VERSION=0.17.2
 RUN sudo curl -OL https://github.com/getzola/zola/releases/download/v$ZOLA_VERSION/zola-v$ZOLA_VERSION-x86_64-unknown-linux-gnu.tar.gz \
     && sudo tar -xvf zola-v$ZOLA_VERSION-x86_64-unknown-linux-gnu.tar.gz \
     && sudo mv zola /usr/bin/zola \

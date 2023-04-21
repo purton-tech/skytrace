@@ -8,6 +8,7 @@ alias gpsup="git push --set-upstream origin $(git symbolic-ref -q HEAD | sed -e 
 alias gcb='git checkout -b'
 alias gcr='f() { git checkout -b $1 origin/$1; }; f'
 alias gitsetup='git config --global user.name \$NAME && git config --global user.email \$EMAIL'
+alias gsu='git submodule update --recursive --remote'
 
 # Watch
 alias watch-app='mold -run cargo watch --workdir /workspace/ -w crates/primer-rsx -w crates/ui-components -w crates/grpc-api -w crates/axum-server -w crates/db -w crates/asset-pipeline/dist -w crates/asset-pipeline/images --no-gitignore -x "run --bin trace"'
